@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Jordsand Vogelzählung</string>
+    <string name="title_activity_census_selection">Zählung auswählen</string>
+    <string name="title_activity_new_census">Zählung starten</string>
+    <string name="title_activity_area_selection">Gebiet auswählen</string>
+
+    <!-- overview activity -->
+    <string name="overview_or">oder</string>
+    <string name="overview_show_data">Daten anzeigen</string>
+    <string name="overview_start_census">Zählung starten</string>
+    <string name="overview_continue_census">Zählung fortsetzen</string>
+
+    <!-- new census activity -->
+    <string name="new_census_start_time">Start</string>
+    <string name="new_census_observer">Beobachter</string>
+    <string name="new_census_water_gauge">Wasserstand</string>
+    <string name="new_census_wind">Wind</string>
+    <string name="new_census_precipitation">Niederschlag</string>
+    <string name="new_census_visibility">Sicht</string>
+    <string name="new_census_glaciation_lvl">Vereisungsgrad</string>
+    <string name="new_census_go">Zählung starten</string>
+
+    <!-- area selection -->
+
+    <!-- misc -->
+    <string name="wind_dir_north">Nord</string>
+    <string name="wind_dir_east">Ost</string>
+    <string name="wind_dir_south">Süd</string>
+    <string name="wind_dir_west">West</string>
+
+</resources>
