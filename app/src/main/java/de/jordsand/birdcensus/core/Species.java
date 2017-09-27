@@ -16,14 +16,19 @@ public class Species {
         this.name = name;
     }
 
-    public Species(@NonNull String name, @NonNull String scientificName) {
+    public Species(@NonNull String name, @Nullable String scientificName) {
         this.name = name;
-        this.scientificName = scientificName;
+        if (scientificName != null && !scientificName.isEmpty()) {
+            this.scientificName = scientificName;
+        }
+
     }
 
-    public Species(@NonNull String name, @NonNull String scientificName, @NonNull Group belongsTo) {
+    public Species(@NonNull String name, @Nullable String scientificName, @NonNull Group belongsTo) {
         this.name = name;
-        this.scientificName = scientificName;
+        if (scientificName != null && !scientificName.isEmpty()) {
+            this.scientificName = scientificName;
+        }
         this.belongsTo = belongsTo;
     }
 
