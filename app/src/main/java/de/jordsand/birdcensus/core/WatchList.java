@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * A simple watchlist for a certain area
@@ -31,8 +32,13 @@ public class WatchList implements Iterable<Pair<Species, Integer>> {
     }
 
     @NonNull
-    public Map<Species, Integer> getObservedSpecies() {
+    public Map<Species, Integer> getObservedSpeciesMap() {
         return Collections.unmodifiableMap(observedSpecies);
+    }
+
+    @NonNull
+    public Set<Species> getObservedSpecies() {
+        return Collections.unmodifiableSet(observedSpecies.keySet());
     }
 
     /**

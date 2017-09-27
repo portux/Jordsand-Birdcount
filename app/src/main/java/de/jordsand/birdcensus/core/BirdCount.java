@@ -1,15 +1,17 @@
 package de.jordsand.birdcensus.core;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import de.jordsand.birdcensus.util.DateConverter;
 
@@ -17,8 +19,7 @@ import de.jordsand.birdcensus.util.DateConverter;
  * Representation of a single bird count, just a POJO. Fields should be self-explanatory.
  * @author Rico Bergmann
  */
-public class BirdCount implements Parcelable {
-    public static final Parcelable.Creator<BirdCount> CREATOR = new BirdCountParcelableCreator();
+public class BirdCount {
 
     private final DateConverter dateConverter = new DateConverter();
     private Date startTime;
@@ -87,6 +88,121 @@ public class BirdCount implements Parcelable {
     }
 
     /**
+     * @return each observed species and the number of observed individuals
+     */
+    public Map<Species, Integer> getObservationSummary() {
+        List<Map<Species, Integer>> rawObservationData = getObservedSpeciesMaps();
+        return Collections.unmodifiableMap(mergeObservedSpeciesMap(rawObservationData));
+    }
+
+    /**
+     * @return the number of different species observed
+     */
+    public int getDifferentSpeciesCount() {
+        Set<Species> observedSpecies = new HashSet<>();
+        for (WatchList watchList : this.observedSpecies.values()) {
+            observedSpecies.addAll(watchList.getObservedSpecies());
+        }
+        return observedSpecies.size();
+    }
+
+    /**
+     * @return the total number of individuals observed
+     */
+    public int getTotalObservedSpeciesCount() {
+        int totalCount = 0;
+        for (Integer  count : getObservationSummary().values()) {
+            totalCount += count;
+        }
+        return totalCount;
+    }
+
+    /**
+     * @param species the species to count
+     * @return the total number of individuals of the given species observed during this bird count
+     */
+    public int getObservedCountOf(Species species) {
+        int count = 0;
+        for (WatchList w : observedSpecies.values()) {
+            Integer curr = w.getObservedSpeciesMap().get(species);
+            if (curr != null) {
+                count += curr;
+            }
+        }
+        return count;
+    }
+
+    /**
+     * @param species the species to count
+     * @param areaCode the code of the area to observe
+     * @return the total number of individuals observed in the given area
+     */
+    public int getObservedCountOf(Species species, String areaCode) {
+        for (MonitoringArea monitoringArea : observedSpecies.keySet()) {
+            if (monitoringArea.getCode().equals(areaCode)) {
+                Integer count = observedSpecies.get(monitoringArea).getObservedSpeciesMap().get(species);
+                return (count != null) ? count : 0;
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * @param species the species to count
+     * @param area the area to observe
+     * @return the total number of individuals observed in the given area
+     */
+    public int getObservedCountOf(Species species, MonitoringArea area) {
+        WatchList w = observedSpecies.get(area);
+        if (w != null) {
+            Integer count = w.getObservedSpeciesMap().get(species);
+            return (count != null) ? count : 0;
+        }
+        return 0;
+    }
+
+    /**
+     * @param species the species to query for
+     * @return {@code true} if the species was observed during this bird count, {@code false} otherwise
+     */
+    public boolean wasObserved(Species species) {
+        for (MonitoringArea area : observedSpecies.keySet()) {
+            if (wasObservedIn(species, area)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param species the species to query for
+     * @param areaCode the code of the area to check
+     * @return {@code true} if the species was observed in the given area, {@code false} otherwise
+     */
+    public boolean wasObservedIn(Species species, String areaCode) {
+        for (MonitoringArea area : observedSpecies.keySet()) {
+            if (area.getCode().equals(areaCode)) {
+                return wasObservedIn(species, area);
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param species the species to query for
+     * @param area the area to check
+     * @return {@code true} if the species was observed in the given area, {@code false} otherwise
+     */
+    public boolean wasObservedIn(Species species, MonitoringArea area) {
+        WatchList watchList = observedSpecies.get(area);
+        if (watchList != null) {
+            Integer count = watchList.getObservedSpeciesMap().get(species);
+            return (count != null && count > 0);
+        }
+        return false;
+    }
+
+    /**
      * @return {@code true} if the census is already finished
      */
     public boolean isTerminated()  {
@@ -123,43 +239,37 @@ public class BirdCount implements Parcelable {
         }
     }
 
-    @Override
-    public int describeContents() {
-        return 0; // we do not have any special contents, so just return '0'
+    /**
+     * Extracts the observations from each watchlist
+     * @return a list consisting of all observations
+     */
+    private List<Map<Species, Integer>> getObservedSpeciesMaps() {
+        List<Map<Species, Integer>> observedSpeciesMap = new ArrayList<>(observedSpecies.size());
+        for (WatchList watchList : observedSpecies.values()) {
+            observedSpeciesMap.add(watchList.getObservedSpeciesMap());
+        }
+        return observedSpeciesMap;
     }
 
-    @Override
-    public void writeToParcel(Parcel out, int flags) {
-        // TODO write and retrieve date-instances to parcelable?
-        out.writeString(dateConverter.formatDate(startTime));
-        out.writeValue(isTerminated());
-        if (isTerminated()) {
-            out.writeString(dateConverter.formatDate(endTime));
+    /**
+     * Merges a list of observations into a single map.
+     * For each species it will contain the total number of observations
+     * @param observedSpecies the raw observation list
+     * @return the merged list
+     */
+    private Map<Species, Integer> mergeObservedSpeciesMap(List<Map<Species, Integer>> observedSpecies) {
+        Map<Species, Integer> mergedMap = new HashMap<>();
+
+        for (Map<Species, Integer> watchlist : observedSpecies) {
+            for (Species species : watchlist.keySet()) {
+                if (mergedMap.containsKey(species)) {
+                    mergedMap.put(species, mergedMap.get(species) + watchlist.get(species));
+                } else {
+                    mergedMap.put(species, watchlist.get(species));
+                }
+            }
         }
-
-        // TODO make WeatherInfo parcelable
-
-        out.writeString(observerName);
-
-        // *************************************
-        // TODO discuss applicability of general (background) Service to store current (ongoing) bird count instead of making everything Parcelable
-        // *************************************
-        //
-        // possible structure:
-        //
-        // +-------------+
-        // | application |
-        // +-------------+---------------+
-        // | background-service          |
-        // +-----------------------------+
-        //
-        // on init new bird count: propagate to service
-        // retrieve current bird count from service
-        // when finished store bird count in database
-        //
-
-
-
+        return mergedMap;
     }
 
     @Override
@@ -193,17 +303,5 @@ public class BirdCount implements Parcelable {
             str = String.format("Bird count [by=%s; started=%tc; ongoing]", observerName, startTime);
         }
         return str;
-    }
-
-    public static class BirdCountParcelableCreator implements Parcelable.Creator<BirdCount> {
-        @Override
-        public BirdCount createFromParcel(Parcel parcel) {
-            return null;
-        }
-
-        @Override
-        public BirdCount[] newArray(int i) {
-            return new BirdCount[0];
-        }
     }
 }
