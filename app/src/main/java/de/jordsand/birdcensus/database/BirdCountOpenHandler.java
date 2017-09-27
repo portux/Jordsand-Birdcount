@@ -5,13 +5,33 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
+ * Helper class to easily get access to the SQLite database.
+ * To control access to the handler, it uses the Singleton-Pattern.
  * @author Rico Bergmann
  */
 public class BirdCountOpenHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "jordsand_census.db";
 
-    public BirdCountOpenHandler(Context ctx) {
+    private static BirdCountOpenHandler instance = null;
+
+    /**
+     * Provides access to the handler.
+     * @param ctx if no handler was created yet, the context will be used to instantiate
+     * @return the handler
+     */
+    public static BirdCountOpenHandler instance(Context ctx) {
+        if (instance == null) {
+            instance = new BirdCountOpenHandler(ctx);
+        }
+        return instance;
+    }
+
+    /**
+     * We are a singleton, thus the constructor is private
+     * @param ctx context to use for opening the database
+     */
+    private BirdCountOpenHandler(Context ctx) {
         super(ctx, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
