@@ -2,7 +2,7 @@ package de.jordsand.birdcensus.core;
 
 import android.support.annotation.FloatRange;
 import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import de.jordsand.birdcensus.util.Assert;
 
@@ -41,17 +41,15 @@ public class WeatherData {
         COMPLETE
     }
 
-    private double waterGauge;
-    private int windStrength;
+    private Double waterGauge;
+    private Integer windStrength;
     private WindDirection windDirection;
     private Precipitation precipitation;
     private Visibility visibility;
     private GlaciationLevel glaciationLevel;
 
-    public WeatherData(@FloatRange(from = 0.0) double waterGauge, @IntRange(from = 0) int windStrength, @NonNull WindDirection windDirection,
-                       @NonNull Precipitation precipitation, @NonNull Visibility visibility, @NonNull GlaciationLevel glaciationLevel) {
-        Object[] params = {windDirection, precipitation, visibility, glaciationLevel};
-        Assert.elemsNotNull(params);
+    public WeatherData(@Nullable @FloatRange(from = 0.0) Double waterGauge, @Nullable @IntRange(from = 0) Integer windStrength, @Nullable WindDirection windDirection,
+                       @Nullable Precipitation precipitation, @Nullable Visibility visibility, @Nullable GlaciationLevel glaciationLevel) {
         this.waterGauge = waterGauge;
         this.windStrength = windStrength;
         this.windDirection = windDirection;
@@ -60,30 +58,32 @@ public class WeatherData {
         this.glaciationLevel = glaciationLevel;
     }
 
-    public double getWaterGauge() {
+    @Nullable @FloatRange(from = 0.0)
+    public Double getWaterGauge() {
         return waterGauge;
     }
 
-    public int getWindStrength() {
+    @Nullable @IntRange(from = 0)
+    public Integer getWindStrength() {
         return windStrength;
     }
 
-    @NonNull
+    @Nullable
     public WindDirection getWindDirection() {
         return windDirection;
     }
 
-    @NonNull
+    @Nullable
     public Precipitation getPrecipitation() {
         return precipitation;
     }
 
-    @NonNull
+    @Nullable
     public Visibility getVisibility() {
         return visibility;
     }
 
-    @NonNull
+    @Nullable
     public GlaciationLevel getGlaciationLevel() {
         return glaciationLevel;
     }
@@ -95,8 +95,10 @@ public class WeatherData {
 
         WeatherData that = (WeatherData) o;
 
-        if (Double.compare(that.waterGauge, waterGauge) != 0) return false;
-        if (windStrength != that.windStrength) return false;
+        if (waterGauge != null ? !waterGauge.equals(that.waterGauge) : that.waterGauge != null)
+            return false;
+        if (windStrength != null ? !windStrength.equals(that.windStrength) : that.windStrength != null)
+            return false;
         if (windDirection != that.windDirection) return false;
         if (precipitation != that.precipitation) return false;
         if (visibility != that.visibility) return false;
@@ -106,15 +108,12 @@ public class WeatherData {
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        temp = Double.doubleToLongBits(waterGauge);
-        result = (int) (temp ^ (temp >>> 32));
-        result = 31 * result + windStrength;
-        result = 31 * result + windDirection.hashCode();
-        result = 31 * result + precipitation.hashCode();
-        result = 31 * result + visibility.hashCode();
-        result = 31 * result + glaciationLevel.hashCode();
+        int result = waterGauge != null ? waterGauge.hashCode() : 0;
+        result = 31 * result + (windStrength != null ? windStrength.hashCode() : 0);
+        result = 31 * result + (windDirection != null ? windDirection.hashCode() : 0);
+        result = 31 * result + (precipitation != null ? precipitation.hashCode() : 0);
+        result = 31 * result + (visibility != null ? visibility.hashCode() : 0);
+        result = 31 * result + (glaciationLevel != null ? glaciationLevel.hashCode() : 0);
         return result;
     }
 
