@@ -3,6 +3,8 @@ package de.jordsand.birdcensus.infrastructure;
 /**
  * A repository provides access to a set of entities of certain kind which may be distinguished
  * through some kind of identifier.
+ * @param <Entity> the type of objects to be persisted
+ * @param <Id> the primary key of the persisted entities
  * @author Rico Bergmann
  */
 public interface Repository<Entity, Id> {
@@ -11,7 +13,7 @@ public interface Repository<Entity, Id> {
      * Adds a new entity to the repository
      * @param instance the entity to save
      */
-    void save(Entity instance);
+    Id save(Entity instance);
 
     /**
      * Checks for a certain entity
