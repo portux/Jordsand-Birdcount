@@ -54,7 +54,7 @@ public class Species {
      * @return {@code true} if a scientific name was set for this species, or {@code false} otherwise
      */
     public boolean hasScientificName() {
-        return scientificName != null;
+        return scientificName != null && !scientificName.isEmpty();
     }
 
     @Override
