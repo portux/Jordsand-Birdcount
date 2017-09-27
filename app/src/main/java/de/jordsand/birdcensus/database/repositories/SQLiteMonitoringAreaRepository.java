@@ -49,8 +49,9 @@ public class SQLiteMonitoringAreaRepository implements MonitoringAreaRepository 
     }
 
     @Override
-    public void save(MonitoringArea area) {
+    public String save(MonitoringArea area) {
         db.insert(BirdCountContract.MonitoringArea.TABLE_NAME, null, monitoringAreaToContentValues(area));
+        return area.getCode();
     }
 
     @Override
@@ -136,7 +137,7 @@ public class SQLiteMonitoringAreaRepository implements MonitoringAreaRepository 
     private ContentValues monitoringAreaToContentValues(MonitoringArea area) {
         ContentValues values = new ContentValues();
         values.put(BirdCountContract.MonitoringArea.COLUMN_NAME_CODE, area.getCode());
-        values.put(BirdCountContract.MonitoringArea.COLUMN_NAME_NAME, area.getCode());
+        values.put(BirdCountContract.MonitoringArea.COLUMN_NAME_NAME, area.getName());
         return values;
     }
 
@@ -151,7 +152,7 @@ public class SQLiteMonitoringAreaRepository implements MonitoringAreaRepository 
         }
 
         final int CODE_IDX = data.getColumnIndexOrThrow(BirdCountContract.MonitoringArea.COLUMN_NAME_CODE);
-        final int NAME_IDX = data.getColumnIndexOrThrow(BirdCountContract.MonitoringArea.COLUMN_NAME_CODE);
+        final int NAME_IDX = data.getColumnIndexOrThrow(BirdCountContract.MonitoringArea.COLUMN_NAME_NAME);
         String code = data.getString(CODE_IDX);
         String name = data.getString(NAME_IDX);
 

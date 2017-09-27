@@ -3,6 +3,7 @@ package de.jordsand.birdcensus.database.repositories;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +24,8 @@ public class SQLiteSpeciesRepository implements SpeciesRepository {
     }
 
     @Override
-    public void save(Species species) {
-        db.insert(BirdCountContract.Species.TABLE_NAME, null, speciesToContentValues(species));
+    public Long save(Species species) {
+        return db.insertOrThrow(BirdCountContract.Species.TABLE_NAME, null, speciesToContentValues(species));
     }
 
     @Override
@@ -98,6 +99,54 @@ public class SQLiteSpeciesRepository implements SpeciesRepository {
     }
 
     @Override
+    public List<Species> findByName(String name) {
+        String[] projection = {
+                BirdCountContract.Species.COLUMN_NAME_NAME,
+                BirdCountContract.Species.COLUMN_NAME_SCIENTIFIC_NAME
+        };
+        String selection = BirdCountContract.Species.COLUMN_NAME_NAME + " = ?";
+        String[] selectionArgs = { name };
+
+        Cursor result = db.query(
+                BirdCountContract.Species.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+        List<Species> species = new ArrayList<>(result.getCount());
+        while (result.moveToNext()) {
+            species.add(rebuildSpecies(result));
+        }
+        result.close();
+        return species;
+    }
+
+    @Override
+    public Species findByScientificName(String scientificName) {
+        String[] projection = {
+                BirdCountContract.Species.COLUMN_NAME_NAME,
+                BirdCountContract.Species.COLUMN_NAME_SCIENTIFIC_NAME
+        };
+        String selection = BirdCountContract.Species.COLUMN_NAME_SCIENTIFIC_NAME + " = ?";
+        String[] selectionArgs = { scientificName };
+        Cursor result = db.query(
+                BirdCountContract.Species.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+        Species species = rebuildSpecies(result);
+        result.close();
+        return species;
+    }
+
+    @Override
     public boolean remove(Long aLong) {
         throw new UnsupportedOperationException("Deleting species is forbidden");
     }
@@ -112,6 +161,8 @@ public class SQLiteSpeciesRepository implements SpeciesRepository {
         values.put(BirdCountContract.Species.COLUMN_NAME_NAME, species.getName());
         if (species.hasScientificName()) {
             values.put(BirdCountContract.Species.COLUMN_NAME_SCIENTIFIC_NAME, species.getScientificName());
+        } else {
+            values.put(BirdCountContract.Species.COLUMN_NAME_SCIENTIFIC_NAME, (String)null);
         }
         return values;
     }

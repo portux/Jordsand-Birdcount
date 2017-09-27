@@ -7,15 +7,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Pair;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -47,12 +44,13 @@ public class SQLiteBirdCountRepository implements BirdCountRepository {
     }
 
     @Override
-    public void save(BirdCount instance) {
+    public Long save(BirdCount instance) {
         BirdCountToSQLiteConverter converter = new BirdCountToSQLiteConverter();
-        db.insert(BirdCountContract.BirdCount.TABLE_NAME, null, converter.extractBirdCountTableData(instance));
+        long id = db.insert(BirdCountContract.BirdCount.TABLE_NAME, null, converter.extractBirdCountTableData(instance));
         for (ContentValues values : converter.extractObservationTableData(instance)) {
             db.insert(BirdCountContract.ObservedSpecies.TABLE_NAME, null, values);
         }
+        return id;
     }
 
     @Nullable
@@ -125,7 +123,10 @@ public class SQLiteBirdCountRepository implements BirdCountRepository {
             long censusID = matchingBirdCounts.getLong(CENSUS_ID_IDX);
             Cursor observationData = converter.loadObservationDataFor(censusID);
             birdCounts.add(converter.buildBirdCount(matchingBirdCounts, observationData));
+            observationData.close();
         }
+
+        matchingBirdCounts.close();
 
         return birdCounts;
     }
@@ -163,12 +164,15 @@ public class SQLiteBirdCountRepository implements BirdCountRepository {
         SQLiteToBirdCountConverter converter = new SQLiteToBirdCountConverter();
         Cursor observationData = converter.loadObservationDataFor(censusId);
 
-        return converter.buildBirdCount(birdCountData, observationData);
+        BirdCount birdCount = converter.buildBirdCount(birdCountData, observationData);
+        birdCountData.close();
+        return birdCount;
     }
 
     @Override
     public Iterable<BirdCount> findAll() {
         String[] projection = {
+                BirdCountContract.BirdCount._ID,
                 BirdCountContract.BirdCount.COLUMN_NAME_START_TIME,
                 BirdCountContract.BirdCount.COLUMN_NAME_END_TIME,
                 BirdCountContract.BirdCount.COLUMN_NAME_WATER_GAUGE,
@@ -191,14 +195,17 @@ public class SQLiteBirdCountRepository implements BirdCountRepository {
         );
 
         final int CENSUS_ID_IDX = rawBirdCounts.getColumnIndexOrThrow(BirdCountContract.BirdCount._ID);
-        List<BirdCount> birdCounts = new ArrayList<>(rawBirdCounts.getCount());
+        int resultSize = rawBirdCounts.getCount();
+        List<BirdCount> birdCounts = new ArrayList<>(resultSize);
         SQLiteToBirdCountConverter converter = new SQLiteToBirdCountConverter();
 
         while (rawBirdCounts.moveToNext()) {
             long censusID = rawBirdCounts.getLong(CENSUS_ID_IDX);
             Cursor observationData = converter.loadObservationDataFor(censusID);
             birdCounts.add(converter.buildBirdCount(rawBirdCounts, observationData));
+            observationData.close();
         }
+        rawBirdCounts.close();
 
         return birdCounts;
     }
@@ -313,10 +320,10 @@ public class SQLiteBirdCountRepository implements BirdCountRepository {
                     null,
                     null);
 
+            final int SCIENTIFIC_NAME_IDX = cursor.getColumnIndexOrThrow(BirdCountContract.Species.COLUMN_NAME_SCIENTIFIC_NAME);
+
             while (cursor.moveToNext()){
-                boolean scientificNameUnset = cursor.isNull(
-                        cursor.getColumnIndexOrThrow(BirdCountContract.Species.COLUMN_NAME_SCIENTIFIC_NAME)
-                );
+                boolean scientificNameUnset = cursor.isNull(SCIENTIFIC_NAME_IDX) || cursor.getString(SCIENTIFIC_NAME_IDX).isEmpty();
                 if (scientificNameUnset) {
                     long speciesId = cursor.getLong(cursor.getColumnIndexOrThrow(BirdCountContract.Species._ID));
                     cursor.close();
@@ -352,10 +359,10 @@ public class SQLiteBirdCountRepository implements BirdCountRepository {
             WeatherData weather = birdCount.getWeatherInfo();
             values.put(BirdCountContract.BirdCount.COLUMN_NAME_WATER_GAUGE, weather.getWaterGauge());
             values.put(BirdCountContract.BirdCount.COLUMN_NAME_WIND_STRENGTH, weather.getWindStrength());
-            values.put(BirdCountContract.BirdCount.COLUMN_NAME_WIND_DIRECTION, weather.getWindDirection().ordinal());
-            values.put(BirdCountContract.BirdCount.COLUMN_NAME_PRECIPITATION, weather.getPrecipitation().ordinal());
-            values.put(BirdCountContract.BirdCount.COLUMN_NAME_VISIBILITY, weather.getVisibility().ordinal());
-            values.put(BirdCountContract.BirdCount.COLUMN_NAME_GLACIATION_LEVEL, weather.getGlaciationLevel().ordinal());
+            if (weather.getWindDirection() != null) values.put(BirdCountContract.BirdCount.COLUMN_NAME_WIND_DIRECTION, weather.getWindDirection().ordinal());
+            if (weather.getPrecipitation() != null) values.put(BirdCountContract.BirdCount.COLUMN_NAME_PRECIPITATION, weather.getPrecipitation().ordinal());
+            if (weather.getVisibility() != null) values.put(BirdCountContract.BirdCount.COLUMN_NAME_VISIBILITY, weather.getVisibility().ordinal());
+            if (weather.getGlaciationLevel() != null) values.put(BirdCountContract.BirdCount.COLUMN_NAME_GLACIATION_LEVEL, weather.getGlaciationLevel().ordinal());
             values.put(BirdCountContract.BirdCount.COLUMN_NAME_OBSERVER, birdCount.getObserverName());
             return values;
         }
@@ -500,7 +507,7 @@ public class SQLiteBirdCountRepository implements BirdCountRepository {
          * @return the data
          */
         WeatherData fetchWeatherDataFrom(Cursor cursor) {
-            if (!cursor.moveToFirst()) {
+            if (cursor.getPosition() < 0 && !cursor.moveToFirst()) {
                 return null;
             }
 
