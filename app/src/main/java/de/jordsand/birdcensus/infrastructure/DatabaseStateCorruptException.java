@@ -1,6 +1,7 @@
 package de.jordsand.birdcensus.infrastructure;
 
 /**
+ * Exception to indicate that some database constraints were violated
  * @author Rico Bergmann
  */
 public class DatabaseStateCorruptException extends IllegalStateException {
