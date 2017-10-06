@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="SpeciesList">
+        <xs:complexType>
+            <xs:element name="Order">
+                <xs:complexType>
+                    <xs:attribute name="name" type="xs:string" use="optional" />
+                    <xs:element name="Species">
+                        <xs:complexType>
+                            <xs:attribute name="name" type="xs:string" use="required" />
+                            <xs:attribute name="scientific" type="xs:string" use="optional" />
+                        </xs:complexType>
+                    </xs:element>
+                </xs:complexType>
+            </xs:element>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="AreaList">
+        <xs:complexType>
+            <xs:element name="MonitoringArea">
+                <xs:complexType>
+                    <xs:attribute name="name" type="xs:string" />
+                    <xs:attribute name="code" type="xs:string" use="required" />
+                    <xs:element name="position">
+                        <xs:complexType>
+                            <xs:attribute name="x_coord" type="xs:decimal" />
+                            <xs:attribute name="y_coord" type="xs:decimal" />
+                        </xs:complexType>
+                    </xs:element>
+                </xs:complexType>
+            </xs:element>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>

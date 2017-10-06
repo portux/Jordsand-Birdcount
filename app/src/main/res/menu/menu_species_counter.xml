@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/finish_species_counter"
+        android:title="@string/menu_terminate_census"
+        android:icon="@drawable/ic_done"
+        app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/abort_species_counter"
+        android:title="@string/menu_abort_census"
+        android:icon="@drawable/ic_close"
+        app:showAsAction="ifRoom" />
+
+</menu>

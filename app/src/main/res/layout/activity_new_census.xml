@@ -1,182 +1,236 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="de.jordsand.birdcensus.activities.NewCensus"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
+    tools:context="de.jordsand.birdcensus.activities.NewCensus">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tv_start"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:text="@string/new_census_start_time"
+        app:layout_constraintTop_toTopOf="@+id/edit_start"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_start"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintRight_toLeftOf="@+id/edit_guideline"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_start"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/new_census_start_time"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true" />
+    <EditText
+        android:id="@+id/edit_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:enabled="false"
+        android:hint="@string/new_census_start_time_hint"
+        android:inputType="datetime"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        app:layout_constraintLeft_toLeftOf="@+id/edit_guideline"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/edit_start"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:ems="10"
-            android:enabled="false"
-            android:inputType="datetime"
-            android:layout_toEndOf="@+id/tv_glaciation_lvl"
-            android:layout_toRightOf="@+id/tv_glaciation_lvl"
-            android:layout_alignBaseline="@+id/tv_start" />
+    <TextView
+        android:id="@+id/tv_water_gauge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/new_census_water_gauge"
+        app:layout_constraintTop_toTopOf="@+id/edit_water_gauge"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_water_gauge"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintRight_toLeftOf="@+id/edit_guideline"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_water_gauge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/new_census_water_gauge"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/tv_start" />
+    <EditText
+        android:id="@+id/edit_water_gauge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="-39dp"
+        android:layout_marginTop="17dp"
+        android:ems="5"
+        android:hint="@string/new_census_water_gauge_hint"
+        android:inputType="numberDecimal"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:textAlignment="center"
+        app:layout_constraintLeft_toLeftOf="@+id/edit_start"
+        app:layout_constraintTop_toBottomOf="@+id/edit_start" />
 
-        <EditText
-            android:id="@+id/edit_water_gauge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:ems="10"
-            android:inputType="numberDecimal"
-            android:layout_toEndOf="@+id/tv_glaciation_lvl"
-            android:layout_toRightOf="@+id/tv_glaciation_lvl"
-            android:layout_alignBaseline="@+id/tv_water_gauge" />
+    <TextView
+        android:id="@+id/tv_wind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/new_census_wind"
+        app:layout_constraintTop_toTopOf="@+id/edit_wind_strength"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_wind_strength"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintRight_toLeftOf="@+id/edit_guideline"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_wind"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/new_census_wind"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/tv_water_gauge" />
+    <EditText
+        android:id="@+id/edit_wind_strength"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="5"
+        android:hint="@string/new_census_wind_strength_hint"
+        android:inputType="number"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:textAlignment="center"
+        app:layout_constraintLeft_toLeftOf="@+id/edit_water_gauge"
+        app:layout_constraintTop_toBottomOf="@+id/edit_water_gauge" />
 
-        <EditText
-            android:id="@+id/edit_wind_strength"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:ems="10"
-            android:inputType="number"
-            android:layout_toEndOf="@+id/tv_glaciation_lvl"
-            android:layout_toRightOf="@+id/tv_glaciation_lvl"
-            android:layout_alignBaseline="@+id/tv_wind" />
+    <Spinner
+        android:id="@+id/spin_wind_direction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"
+        app:layout_constraintLeft_toRightOf="@+id/edit_wind_strength"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_wind_strength"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintVertical_bias="0.666"
+        app:layout_constraintTop_toTopOf="@+id/edit_wind_strength"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent" />
 
-        <Spinner
-            android:id="@+id/spin_wind_direction"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:spinnerMode="dropdown"
-            android:layout_toEndOf="@+id/tv_glaciation_lvl"
-            android:layout_toRightOf="@+id/tv_glaciation_lvl"
-            android:layout_below="@+id/tv_wind" />
+    <TextView
+        android:id="@+id/tv_precipitation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/new_census_precipitation"
+        app:layout_constraintRight_toLeftOf="@+id/edit_guideline"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_bias="0.307"
+        app:layout_constraintBottom_toBottomOf="@+id/spin_precipitation"
+        android:layout_marginBottom="0dp" />
 
-        <TextView
-            android:id="@+id/tv_precipitation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/new_census_precipitation"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/spin_wind_direction" />
+    <Spinner
+        android:id="@+id/spin_precipitation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:spinnerMode="dropdown"
+        app:layout_constraintLeft_toLeftOf="@+id/edit_wind_strength"
+        app:layout_constraintTop_toBottomOf="@+id/edit_wind_strength" />
 
-        <Spinner
-            android:id="@+id/spin_precipitation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:spinnerMode="dropdown"
-            android:layout_toEndOf="@+id/tv_glaciation_lvl"
-            android:layout_toRightOf="@+id/tv_glaciation_lvl"
-            android:layout_alignBaseline="@+id/tv_precipitation" />
+    <TextView
+        android:id="@+id/tv_visibility"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/new_census_visibility"
+        app:layout_constraintRight_toLeftOf="@+id/edit_guideline"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintBottom_toBottomOf="@+id/spin_visibility"
+        android:layout_marginBottom="0dp" />
 
-        <TextView
-            android:id="@+id/tv_visibility"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/new_census_visibility"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/tv_precipitation" />
+    <Spinner
+        android:id="@+id/spin_visibility"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:spinnerMode="dropdown"
+        app:layout_constraintLeft_toLeftOf="@+id/spin_precipitation"
+        app:layout_constraintTop_toBottomOf="@+id/spin_precipitation" />
 
-        <Spinner
-            android:id="@+id/spin_visibility"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:spinnerMode="dropdown"
-            android:layout_toEndOf="@+id/tv_glaciation_lvl"
-            android:layout_toRightOf="@+id/tv_glaciation_lvl"
-            android:layout_alignBaseline="@+id/tv_visibility" />
+    <TextView
+        android:id="@+id/tv_glaciation_lvl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/new_census_glaciation_lvl"
+        android:layout_marginBottom="0dp"
+        app:layout_constraintRight_toLeftOf="@+id/edit_guideline"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintBottom_toBottomOf="@+id/spin_glaciation_lvl" />
 
-        <TextView
-            android:id="@+id/tv_glaciation_lvl"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/new_census_glaciation_lvl"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/tv_visibility" />
+    <Spinner
+        android:id="@+id/spin_glaciation_lvl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:spinnerMode="dropdown"
+        app:layout_constraintLeft_toLeftOf="@+id/spin_visibility"
+        app:layout_constraintTop_toBottomOf="@+id/spin_visibility" />
 
-        <Spinner
-            android:id="@+id/spin_glaciation_lvl"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:spinnerMode="dropdown"
-            android:layout_toEndOf="@+id/tv_glaciation_lvl"
-            android:layout_toRightOf="@+id/tv_glaciation_lvl"
-            android:layout_alignBaseline="@+id/tv_glaciation_lvl" />
+    <TextView
+        android:id="@+id/tv_observer_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/new_census_observer"
+        app:layout_constraintRight_toLeftOf="@+id/edit_guideline"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_bias="0.514"
+        app:layout_constraintTop_toTopOf="@+id/edit_observer_name"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_observer_name"
+        android:layout_marginBottom="8dp" />
 
-        <TextView
-            android:id="@+id/tv_observer_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/new_census_observer"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/tv_glaciation_lvl" />
+    <EditText
+        android:id="@+id/edit_observer_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="@string/new_census_observer_hint"
+        android:inputType="textPersonName"
+        android:singleLine="true"
+        android:textAlignment="textStart"
+        android:gravity="start"
+        app:layout_constraintLeft_toLeftOf="@+id/spin_glaciation_lvl"
+        app:layout_constraintTop_toBottomOf="@+id/spin_glaciation_lvl" />
 
-        <EditText
-            android:id="@+id/edit_observer_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:layout_toEndOf="@+id/tv_glaciation_lvl"
-            android:layout_toRightOf="@+id/tv_glaciation_lvl"
-            android:layout_alignBaseline="@+id/tv_observer_name" />
+    <Button
+        android:id="@+id/btn_go"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/new_census_go"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
 
-        <Button
-            android:id="@+id/btn_go"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_margin="10dp"
-            android:text="@string/new_census_go"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/tv_observer_name"
-            />
+    <android.support.constraint.Guideline
+        android:id="@+id/edit_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.3203125"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="123dp" />
 
-    </RelativeLayout>
 
-</ScrollView>
+</android.support.constraint.ConstraintLayout>

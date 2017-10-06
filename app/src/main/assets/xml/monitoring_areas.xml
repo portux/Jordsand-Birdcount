@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<AreaList schemaLocation="schema.xsd">
+    <MonitoringArea name="Alte Schleimündung" code="ASM">
+        <position x_coord="54.686" y_coord="10.024" />
+    </MonitoringArea>
+    <MonitoringArea name="Breite" code="Br">
+        <position x_coord="54.6835" y_coord="10.0268" />
+    </MonitoringArea>
+    <MonitoringArea name="Flöholmer Bucht" code="FB">
+        <position x_coord="54.6914" y_coord="10.0182" />
+    </MonitoringArea>
+    <MonitoringArea name="Flöholm" code="FH">
+        <position x_coord="54.6931" y_coord="10.0189" />
+    </MonitoringArea>
+    <MonitoringArea name="Großer Sand" code="GrS">
+        <position x_coord="54.6911" y_coord="10.0303" />
+    </MonitoringArea>
+    <MonitoringArea name="Großer Strandwall" code="GrStrW">
+        <position x_coord="54.6853" y_coord="10.0348" />
+    </MonitoringArea>
+    <MonitoringArea name="Große Wiese" code="GrW">
+        <position x_coord="54.6894" y_coord="10.0323" />
+    </MonitoringArea>
+    <MonitoringArea name="Hafen" code="Hf">
+        <position x_coord="54.673" y_coord="10.03209" />
+    </MonitoringArea>
+    <MonitoringArea name="Kiefernrevier" code="KR">
+        <position x_coord="54.67757" y_coord="10.03385" />
+    </MonitoringArea>
+    <MonitoringArea name="Kleiner Teich" code="KT">
+        <position x_coord="54.67958" y_coord="10.03398" />
+    </MonitoringArea>
+    <MonitoringArea name="Kiefernwäldchen" code="KW">
+        <position x_coord="54.67526" y_coord="10.03374" />
+    </MonitoringArea>
+    <MonitoringArea name="Lotsbarg" code="LB">
+        <position x_coord="54.68241" y_coord="10.03153" />
+    </MonitoringArea>
+    <MonitoringArea name="Lotsenhaus" code="LH">
+        <position x_coord="54.67371" y_coord="10.03404" />
+    </MonitoringArea>
+    <MonitoringArea name="Lotsenteich" code="LT">
+        <position x_coord="54.68394" y_coord="10.03349" />
+    </MonitoringArea>
+    <MonitoringArea name="Olpenitz" code="OLP">
+        <position x_coord="54.67168" y_coord="10.02943" />
+    </MonitoringArea>
+    <MonitoringArea name="Ostsee" code="OST">
+        <position x_coord="54.6866" y_coord="10.0373" />
+    </MonitoringArea>
+    <MonitoringArea name="Oeher Wiesen" code="OW">
+        <position x_coord="54.6934" y_coord="10.0227" />
+    </MonitoringArea>
+    <MonitoringArea name="Pappelrevier" code="PR">
+        <position x_coord="54.6812" y_coord="10.0337" />
+    </MonitoringArea>
+    <MonitoringArea name="Pappelwäldchen" code="PW">
+        <position x_coord="54.6783" y_coord="10.0347" />
+    </MonitoringArea>
+    <MonitoringArea name="Quellhaken" code="QH">
+        <position x_coord="54.6795" y_coord="10.0293" />
+    </MonitoringArea>
+    <MonitoringArea name="Quellteich" code="QT">
+        <position x_coord="54.6786" y_coord="10.0307" />
+    </MonitoringArea>
+    <MonitoringArea name="Speisekammer" code="SpK">
+        <position x_coord="54.676" y_coord="10.0314" />
+    </MonitoringArea>
+    <MonitoringArea name="Steert" code="St">
+        <position x_coord="54.6821" y_coord="10.0262" />
+    </MonitoringArea>
+    <MonitoringArea name="Toter Mann" code="TM">
+        <position x_coord="54.6871" y_coord="10.0287" />
+    </MonitoringArea>
+    <MonitoringArea name="Westteich" code="WT">
+        <position x_coord="54.6809" y_coord="10.0318" />
+    </MonitoringArea>
+</AreaList>

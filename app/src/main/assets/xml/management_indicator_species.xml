@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+
+<SpeciesList schemaLocation="schema.xsd">
+    <Order name="Gänsevögel">
+        <Species name="Höckerschwan" scientific="Cygnus olor" />
+        <Species name="Singschwan" scientific="Cygnus cygnus" />
+        <Species name="Zwergschwan" scientific="Cygnus bewickii" />
+        
+        <Species name="Graugans" scientific="Anser anser" />
+        <Species name="Kanadagans" scientific="Branta canadensis" />
+        <Species name="Weißwangengans" scientific="Branta leucopsis" />
+        <Species name="Ringelgans" scientific="Branta bernicla" />
+        <Species name="Brandgans" scientific="Tadorna tadorna" />
+        
+        <Species name="Stockente" scientific="Anas platyrhynchos" />
+        <Species name="Schnatterente" scientific="Anas strepera" />
+        <Species name="Spießente" scientific="Anas acuta" />
+        <Species name="Löffelente" scientific="Anas clypeata" />
+        <Species name="Pfeifente" scientific="Anas penelope" />
+        <Species name="Krickente" scientific="Anas crecca" />
+        <Species name="Knäkente" scientific="Anas querquedula" />
+
+        <Species name="Tafelente" scientific="Aythya ferina" />
+        <Species name="Moorente" scientific="Aythya nyroca" />
+        <Species name="Bergente" scientific="Aythya marila" />
+        <Species name="Reiherente" scientific="Aythya fuligula" />
+
+        <Species name="Eiderente" scientific="Somateria mollissima" />
+        <Species name="Trauerente" scientific="Melanitta nigra" />
+        <Species name="Eisente" scientific="Clangula hyemalis" />
+        <Species name="Schellente" scientific="Bucephala clangula" />
+
+        <Species name="Zwergsäger" scientific="Mergellus albellus" />
+        <Species name="Gänsesäger" scientific="Mergus merganser" />
+        <Species name="Mittelsäger" scientific="Mergus serrator" />
+    </Order>
+
+    <Order name="Hühnervögel">
+        <Species name="Rebhuhn" scientific="Perdix perdix" />
+        <Species name="Jagdfasan" scientific="Phasianus colchicus" />
+    </Order>
+
+    <Order name="Seetaucherartige">
+        <Species name="Eistaucher" scientific="Gavia immer" />
+    </Order>
+
+    <Order name="Lappentaucherartige">
+        <Species name="Ohrentaucher" scientific="Podiceps auritus" />
+        <Species name="Schwarzhalstaucher" scientific="Podiceps nigricollis" />
+        <Species name="Zwergtaucher" scientific="Tachybaptus ruficollis" />
+        <Species name="Haubentaucher" scientific="Podiceps cristatus" />
+        <Species name="Rothalstaucher" scientific="Podiceps grisegena" />
+    </Order>
+
+    <Order name="Kormoranvögel">
+        <Species name="Kormoran" scientific="Phalacrocorax carbo" />
+    </Order>
+
+    <Order name="Schreitvögel">
+        <Species name="Seidenreiher" scientific="Egretta garzetta" />
+        <Species name="Silberreiher" scientific="Casmerodius albus" />
+        <Species name="Graureiher" scientific="Ardea cinerea" />
+
+        <Species name="Weißstorch" scientific="Ciconia iconia" />
+    </Order>
+
+    <Order name="Greifvögel">
+        <Species name="Seeadler" scientific="Haliaeetus albicilla" />
+
+        <Species name="Rohrweihe" scientific="Circus aeruginosus" />
+
+        <Species name="Sperber" scientific="Accipiter nisus" /> 
+    </Order>
+
+    <Order name="Falkenartige">
+        <Species name="Turmfalke" scientific="Falco tinnunculus" />
+        <Species name="Wanderfalke" scientific="Falco peregrinus" />
+    </Order>
+
+    <Order name="Kranichvögel">
+        <Species name="Blässhuhn" scientific="Fulica atra" />
+
+        <Species name="Kranich" scientific="Grus grus" />
+    </Order>
+
+    <Order name="Regenpfeiferartige">
+        <Species name="Austernfischer" scientific="Haematopus otralegus" />
+        <Species name="Säbelschnäbler" scientific="Recurvirostra avosetta" />
+
+        <Species name="Sandregenpfeifer" scientific="Charadrius hiaticula" />
+        <Species name="Kiebitzregenpfeifer" scientific="Pluvialis squatarola" />
+        <Species name="Goldregenpfeifer" scientific="Pluvialis apricaria" />
+        <Species name="Kiebitz" scientific="Vanellus vanellus" />
+
+        <Species name="Knutt" scientific="Calidris canutus" />
+        <Species name="Sanderling" scientific="Calidris alba" />
+        <Species name="Steinwälzer" scientific="Arenaria interpres" />
+        <Species name="Alpenstrandläufer" scientific="Calidris alpina" />
+        <Species name="Sichelstrandläufer" scientific="Calidris ferruginea" />
+        <Species name="Bruchwasserläufer" scientific="Tringa glareola" />
+        <Species name="Waldwasserläufer" scientific="Tringa ochropus" />
+        <Species name="Flussuferläufer" scientific="Actitis hypoleucos" />
+        <Species name="Rotschenkel" scientific="Tringa totanus" />
+        <Species name="Dunkler Wasserläufer" scientific="Tringa erythropus" />
+        <Species name="Grünschenkel" scientific="Tringa nebularia" />
+        <Species name="Uferschnepfe" scientific="Limosa limosa" />
+        <Species name="Pfuhlschnepfe" scientific="Limosa lapponica" />
+        <Species name="Großer Brachvogel" scientific="Numenius arquata" />
+        <Species name="Regenbrachvogel" scientific="Numenius phaeopus" />
+        <Species name="Bekassine" scientific="Gallinago gallinago" />
+        <Species name="Kampfläufer" scientific="Philomachus pugnax" />
+
+        <Species name="Lachmöwe" scientific="Larus ridibundus" />
+        <Species name="Sturmmöwe" scientific="Larus canus" />
+        <Species name="Silbermöwe" scientific="Larus argentatus" />
+        <Species name="Mantelmöwe" scientific="Larus marinus" />
+        <Species name="Heringsmöwe" scientific="Larus fuscus" />
+
+        <Species name="Zwergseeschwalbe" scientific="Sternula albifrons" />
+        <Species name="Brandseeschwalbe" scientific="Sterna sandvicensis" />
+        <Species name="Flussseeschwalbe" scientific="Sterna hirundo" />
+        <Species name="Küstenseeschwalbe" scientific="Sterna paradisaea" />
+    </Order>
+
+    <Order name="Taubenvögel">
+        <Species name="Ringeltaube" scientific="Columba palumbus" />
+    </Order>
+
+    <Order name="Eulen">
+        <Species name="Sumpfohreule" scientific="Asio flammeus" />
+        <Species name="Waldkauz" scientific="Strix aluca" />
+    </Order>
+
+    <Order name="Rackenvögel">
+        <Species name="Eisvogel" scientific="Alcedo atthis" />
+    </Order>
+
+    <Order name="Sperlingsvögel">
+        <Species name="Feldlerche" scientific="Alauda arvensis" />
+
+        <Species name="Rauchschwalbe" scientific="Hirundo rustica" />
+        <Species name="Mehlschwalbe" scientific="Delichon urbicum" />
+
+        <Species name="Wiesenpieper" scientific="Anthus pratensis" />
+        <Species name="Bachstelze" scientific="Motacilla alba" />
+
+        <Species name="Steinschmätzer" scientific="Oenanthe oenanthe" />
+
+        <Species name="Amsel" scientific="Turdus merula" />
+
+        <Species name="Dorngrasmücke" scientific="Sylvia communis" />
+        <Species name="Klappergrasmücke" scientific="Sylvia curruca" />
+
+        <Species name="Aaskrähe" scientific="Corvus corone" />
+
+        <Species name="Star" scientific="Sturnus vulgaris" />
+
+        <Species name="Feldsperling" scientific="Passer montanus" />
+
+        <Species name="Bluthänfling" scientific="Carduelis cannabina" />
+        <Species name="Stieglitz" scientific="Carduelis carduelis" />
+
+        <Species name="Goldammer" scientific="Emberiza citrinella" />
+        <Species name="Grauammer" scientific="Emberiza calandra" />
+    </Order>
+
+</SpeciesList>
