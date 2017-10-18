@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.os.Environment;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -23,6 +25,8 @@ import de.jordsand.birdcensus.database.BirdCountOpenHandler;
 import de.jordsand.birdcensus.database.repositories.SQLiteMonitoringAreaRepository;
 import de.jordsand.birdcensus.database.repositories.SQLiteSpeciesRepository;
 import de.jordsand.birdcensus.database.repositories.setup.DatabaseInflater;
+import de.jordsand.birdcensus.services.OfflineMapSetupService;
+import de.jordsand.birdcensus.services.OsmDroidOfflineMapSetupService;
 import de.jordsand.birdcensus.services.SimpleBirdCountService;
 
 /**
@@ -134,6 +138,11 @@ public class Overview extends AppCompatActivity {
             InputStream monitoringAreasXML = getAssets().open("xml/monitoring_areas.xml");
             DatabaseInflater inflater = DatabaseInflater.fromXML(managementIndicatorSpeciesXML, monitoringAreasXML, speciesRepo, areaRepo);
             inflater.inflate();
+
+            OfflineMapSetupService offlineMapSetupService = new OsmDroidOfflineMapSetupService();
+            InputStream offlineMapData = getAssets().open("Schleimuendung.zip");
+            offlineMapSetupService.setup(offlineMapData, Environment.getExternalStorageDirectory().getPath() + File.separator + "osmdroid" + File.separator + "Schleimuendung.zip");
+
         } catch (IOException e) {
             Log.e(TAG, "Unable to open assets: " + e);
         }
