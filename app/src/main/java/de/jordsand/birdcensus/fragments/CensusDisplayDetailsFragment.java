@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,8 +59,7 @@ public class CensusDisplayDetailsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Context ctx = getActivity() == null ? getContext() : getActivity();
         BirdCountOpenHandler openHandler = BirdCountOpenHandler.instance(ctx);
         birdCountRepo = new SQLiteBirdCountRepository(openHandler.getReadableDatabase());
@@ -122,19 +122,20 @@ public class CensusDisplayDetailsFragment extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
 
             DetailListItem item = (DetailListItem) getItem(position);
+            View result = null;
 
             switch (item.getItemType()) {
                 case SUMMARY_SECTION:
                 case AREA_SECTION:
-                    inflateSection(item, convertView, parent);
+                    result = inflateSection(item, convertView, parent);
                     break;
                 case SUMMARY_ITEM:
                 case STANDARD_ITEM:
-                    inflateEntry(item, convertView, parent);
+                    result = inflateEntry(item, convertView, parent);
                     break;
             }
 
-            return convertView;
+            return result;
 
         }
 
@@ -144,12 +145,12 @@ public class CensusDisplayDetailsFragment extends Fragment {
          * @param convertView the view
          * @param parent the view group the given item resides in
          */
-        private void inflateSection(DetailListItem item, View convertView, ViewGroup parent) {
+        private View inflateSection(DetailListItem item, View convertView, ViewGroup parent) {
             SectionViewHolder sectionHolder;
             if (convertView == null || !(convertView.getTag() instanceof SectionViewHolder)) {
                 convertView = inflater.inflate(R.layout.species_list_monitoring_area, parent, false);
                 sectionHolder = new SectionViewHolder();
-                sectionHolder.title = (TextView) convertView.findViewById(R.id.observation_area);
+                sectionHolder.title = convertView.findViewById(R.id.observation_area);
                 convertView.setTag(sectionHolder);
             } else {
                 sectionHolder = (SectionViewHolder) convertView.getTag();
@@ -161,6 +162,7 @@ public class CensusDisplayDetailsFragment extends Fragment {
             } else {
                 sectionHolder.title.setText(R.string.census_overview);
             }
+            return convertView;
         }
 
         /**
@@ -169,7 +171,7 @@ public class CensusDisplayDetailsFragment extends Fragment {
          * @param convertView the view
          * @param parent the view group the given item resides in
          */
-        private void inflateEntry(DetailListItem item, View convertView, ViewGroup parent) {
+        private View inflateEntry(DetailListItem item, View convertView, ViewGroup parent) {
             SpeciesViewHolder speciesHolder;
             if (convertView == null || !(convertView.getTag() instanceof SpeciesViewHolder)) {
                 convertView = inflater.inflate(R.layout.observation_list, parent, false);
@@ -192,6 +194,7 @@ public class CensusDisplayDetailsFragment extends Fragment {
             } else {
                 speciesHolder.scientific.setVisibility(View.GONE);
             }
+            return convertView;
         }
 
         class SectionViewHolder {

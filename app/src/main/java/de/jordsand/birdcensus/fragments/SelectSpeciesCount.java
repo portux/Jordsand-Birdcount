@@ -19,6 +19,7 @@ import android.widget.Toast;
 import java.util.Locale;
 
 import de.jordsand.birdcensus.R;
+import de.jordsand.birdcensus.activities.AddSighting;
 import de.jordsand.birdcensus.activities.SpeciesCounter;
 import de.jordsand.birdcensus.infrastructure.MinInputFilter;
 
@@ -29,7 +30,6 @@ import static android.app.Activity.RESULT_OK;
  * Dialog to enter the count of a observed species
  */
 public class SelectSpeciesCount extends DialogFragment {
-    private static final int RQ_COUNTER = 777;
     private static final int MIN_SPECIES_COUNT = 1;
 
     public interface OnSpeciesCountSelectedListener {
@@ -75,19 +75,6 @@ public class SelectSpeciesCount extends DialogFragment {
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == RQ_COUNTER) {
-            if (resultCode == RESULT_OK) {
-                mListener.onSpeciesCountSelected(data.getIntExtra("count", 0));
-                dismiss();
-            } else if (resultCode == RESULT_CANCELED){
-                Toast.makeText(getContext(), "Back button", Toast.LENGTH_SHORT).show();
-                dismiss();
-            }
-        }
-    }
-
     /**
      * The count was selected
      */
@@ -110,8 +97,8 @@ public class SelectSpeciesCount extends DialogFragment {
     private class OpenCounterOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(getContext(), SpeciesCounter.class);
-            startActivityForResult(intent, RQ_COUNTER);
+            Intent intent = new Intent(getActivity(), SpeciesCounter.class);
+            getActivity().startActivityForResult(intent, AddSighting.RQ_COUNTER);
         }
     }
 }

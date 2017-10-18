@@ -45,12 +45,16 @@ import de.jordsand.birdcensus.services.SimpleBirdCountService;
  * @author Rico Bergmann
  */
 public class AddSighting extends AppCompatActivity implements SelectSpeciesCount.OnSpeciesCountSelectedListener {
+    public static final int RQ_COUNTER = 999;
+
     private static final String SELECT_COUNT_TAG = "SpeciesCountFragment";
     private static final int RQ_SPECIES_COUNT = 777;
     private static final int RQ_NEW_SPECIES = 888;
 
     private SimpleBirdCountService birdCountService;
     private boolean mBound;
+
+    private DialogFragment counterDialog;
 
     private ListView list;
     private SpeciesAdapter adapter;
@@ -147,9 +151,16 @@ public class AddSighting extends AppCompatActivity implements SelectSpeciesCount
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RQ_NEW_SPECIES && resultCode == RESULT_OK) {
-            Toast.makeText(this, "Species added", Toast.LENGTH_SHORT).show();
             adapter.setData(repo.findAll());
             adapter.notifyDataSetChanged();
+        } else if (requestCode == RQ_SPECIES_COUNT && resultCode == RESULT_OK) {
+
+        } else if (requestCode == RQ_COUNTER && resultCode == RESULT_OK) {
+            int count = data.getIntExtra("count", 0);
+            birdCountService.addSightingToCurrentBirdCount(monitoringArea, selectedSpecies, count);
+            selectedSpecies = null;
+            adapter.notifyDataSetChanged();
+            counterDialog.dismissAllowingStateLoss();
         }
     }
 
@@ -289,9 +300,9 @@ public class AddSighting extends AppCompatActivity implements SelectSpeciesCount
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             selectedSpecies = (Species) adapter.getItem(position);
-            DialogFragment dialog = new SelectSpeciesCount();
-            dialog.setTargetFragment(null, RQ_SPECIES_COUNT);
-            dialog.show(getSupportFragmentManager(), SELECT_COUNT_TAG);
+            counterDialog = new SelectSpeciesCount();
+            counterDialog.setTargetFragment(null, RQ_SPECIES_COUNT);
+            counterDialog.show(getSupportFragmentManager(), SELECT_COUNT_TAG);
         }
     }
 
