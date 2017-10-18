@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Jordsand Vogelzählung</string>
+    <string name="title_activity_census_selection">Zählung auswählen</string>
+    <string name="title_activity_new_census">Zählung starten</string>
+    <string name="title_activity_area_selection">Gebiet</string>
+    <string name="title_activity_add_sighting">Beobachtungen</string>
+    <string name="title_activity_species_counter">Zählung</string>
+    <string name="title_activity_new_species">Neue Art</string>
+    <string name="title_activity_census_display">Zählung</string>
+
+    <!-- menus -->
+    <string name="menu_terminate_census">Zählung beenden</string>
+    <string name="menu_abort_census">Zählung abbrechen</string>
+    <string name="menu_add_new_species">Hinzufügen</string>
+
+    <!-- status -->
+    <string name="terminate_bird_count">Die Vogelzählung wird beendet und kann danach nicht mehr modifiziert werden.</string>
+    <string name="abort_bird_count">Die Vogelzählung wird abgebrochen und kann danach nicht mehr fortgesetzt werden.</string>
+    <string name="census_terminated">Vogelzählung wurde beendet</string>
+    <string name="census_aborted">Vogelzählung wurde abgebrochen</string>
+
+    <!-- overview activity -->
+    <string name="overview_or">oder</string>
+    <string name="overview_show_data">Daten anzeigen</string>
+    <string name="overview_start_census">Zählung starten</string>
+    <string name="overview_continue_census">Zählung fortsetzen</string>
+
+    <!-- new census activity -->
+    <string name="new_census_start_time">Start</string>
+    <string name="new_census_observer">Beobachter</string>
+    <string name="new_census_water_gauge">Wasserstand</string>
+    <string name="new_census_wind">Wind</string>
+    <string name="new_census_precipitation">Niederschlag</string>
+    <string name="new_census_visibility">Sicht</string>
+    <string name="new_census_glaciation_lvl">Vereisungsgrad</string>
+    <string name="new_census_go">Zählung starten</string>
+    <string name="new_census_start_time_hint">01.01.2001 09:00</string>
+    <string name="new_census_water_gauge_hint">49.5</string>
+    <string name="new_census_wind_strength_hint">2</string>
+    <string name="new_census_observer_hint">Beobachter 1 &#8230;</string>
+
+    <!-- area selection -->
+    <string name="area_selection_code_preview">Code</string>
+    <string name="area_selection_name_preview">Gebietsname</string>
+
+    <!-- add sightings -->
+    <string name="add_sighting_search">Art suchen</string>
+    <string name="add_sighting_new_species">Neue Art</string>
+    <string name="add_sighting_species_name">Artname</string>
+    <string name="add_sighting_species_scientific">Wissenschaftlich</string>
+    <string name="add_sighting_count">Anzahl</string>
+    <string name="start_counter">Zählung starten</string>
+    <string name="sighting_increase_count">+ 1</string>
+    <string name="sighting_increase_count_10">+ 10</string>
+    <string name="sighting_decrease_count">- 1</string>
+    <string name="sighting_decrease_count_10">- 10</string>
+
+    <!-- species counter -->
+    <string name="species_counter_usage_hint">Einfach über die Schaltflächen die Anzahl modifizieren, oder alternativ die Lautstärke-Buttons verwenden.</string>
+
+    <!-- new species -->
+    <string name="new_species_name">Name</string>
+    <string name="new_species_scientific">Wissenschaftl. (optional)</string>
+    <string name="new_species_count">Anzahl</string>
+    <string name="existing_species">Die Art existiert bereits!</string>
+
+    <!-- census selection -->
+    <string name="census_date">Datum</string>
+    <string name="census_observer">Beobachter</string>
+    <string name="total_species_count">%1$d Arten beobachtet,\n%2$d Exemplare gesamt</string>
+
+    <!-- census selection -->
+    <string name="census_selection_enter_date">Datum eingeben</string>
+
+    <!-- census display -->
+    <string name="census_overview">Übersicht</string>
+    <string name="census_details">Details</string>
+    <string name="observation_name">Name</string>
+    <string name="observation_scientific">(%1$s)</string>
+    <string name="observation_count">Anzahl</string>
+    <string name="observation_area_title">Gebiet</string>
+    <string name="census_overview_duration_title">Zeitraum:</string>
+    <string name="census_overview_duration">%1$s - %2$s</string>
+    <string name="census_overview_observer">Beobachter:</string>
+    <string name="census_overview_weather">Wetter</string>
+    <string name="census_overview_water_gauge">Wasserstand:</string>
+    <string name="census_overview_tv_wind">Wind:</string>
+    <string name="census_overview_wind">%1$s %2$s</string>
+    <string name="census_overview_precipitation">Niederschlag:</string>
+    <string name="census_overview_visibility">Sicht:</string>
+    <string name="census_overview_glaciation_lvl">Vereisungsgrad:</string>
+    <string name="census_overview_observations">Beobachtungen</string>
+    <string name="census_overview_different_species">Verschiedene Arten:</string>
+    <string name="census_overview_total_observations">Beobachtungen insgesamt:</string>
+
+    <!-- misc -->
+    <string name="ok">OK</string>
+    <string name="abort">Abbrechen</string>
+    <string name="save">Speichern</string>
+    <string name="unknown">"?"</string>
+    <string name="field_unset">---</string>
+    <string name="error">Fehler</string>
+
+    <string-array name="wind_dirs">
+        <item>---</item>
+        <item>Nord</item>
+        <item>Nordost</item>
+        <item>Ost</item>
+        <item>Südost</item>
+        <item>Süd</item>
+        <item>Südwest</item>
+        <item>West</item>
+        <item>Nordwest</item>
+    </string-array>
+
+    <string-array name="precipitation">
+        <item>keiner</item>
+        <item>Niesel</item>
+        <item>Regen</item>
+    </string-array>
+
+    <string-array name="visibility">
+        <item>klar</item>
+        <item>diesig</item>
+        <item>neblig</item>
+    </string-array>
+
+    <string-array name="glaciation_level">
+        <item>frei</item>
+        <item>Uferzone</item>
+        <item>vollständig</item>
+    </string-array>
+
+    <string name="service_description">Der Service speichert die aktuelle Vogelzählung und greift auf die Datenbank zu</string>
+</resources>
