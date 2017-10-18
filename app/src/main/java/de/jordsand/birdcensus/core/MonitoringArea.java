@@ -10,10 +10,12 @@ import android.support.annotation.NonNull;
 public class MonitoringArea {
     private String name;
     private String code;
+    private Location location;
 
-    public MonitoringArea(@NonNull String name, @NonNull String code) {
+    public MonitoringArea(@NonNull String name, @NonNull String code, @NonNull Location location) {
         this.name = name;
         this.code = code;
+        this.location = location;
     }
 
     @NonNull
@@ -24,6 +26,11 @@ public class MonitoringArea {
     @NonNull
     public String getCode() {
         return code;
+    }
+
+    @NonNull
+    public Location getLocation() {
+        return location;
     }
 
     @Override

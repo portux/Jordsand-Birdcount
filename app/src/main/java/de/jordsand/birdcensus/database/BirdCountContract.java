@@ -42,12 +42,16 @@ public class BirdCountContract {
         public static final String TABLE_NAME = "monitoring_area";
         public static final String COLUMN_NAME_CODE = "code";
         public static final String COLUMN_NAME_NAME = "name";
+        public static final String COLUMN_NAME_LAT = "latitude";
+        public static final String COLUMN_NAME_LON = "longitude";
         // public static final String COLUMN_NAME_IS_STATION = "station";
     }
     public static final String MONITORING_AREA_TABLE_CREATE =
             "CREATE TABLE " + MonitoringArea.TABLE_NAME + " (" +
                     MonitoringArea.COLUMN_NAME_CODE + " TEXT PRIMARY KEY, " +
-                    MonitoringArea.COLUMN_NAME_NAME + " TEXT UNIQUE NOT NULL)";
+                    MonitoringArea.COLUMN_NAME_NAME + " TEXT UNIQUE NOT NULL, " +
+                    MonitoringArea.COLUMN_NAME_LAT + " FLOAT, " +
+                    MonitoringArea.COLUMN_NAME_LON + " FLOAT)";
     public static final String MONITORING_AREA_TABLE_DELETE =
             "DROP TABLE IF EXISTS " + MonitoringArea.TABLE_NAME;
 

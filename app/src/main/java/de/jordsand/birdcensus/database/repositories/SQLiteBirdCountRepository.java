@@ -18,6 +18,7 @@ import java.util.Set;
 
 import de.jordsand.birdcensus.core.BirdCount;
 import de.jordsand.birdcensus.core.BirdCountRepository;
+import de.jordsand.birdcensus.core.Location;
 import de.jordsand.birdcensus.core.MonitoringArea;
 import de.jordsand.birdcensus.core.Species;
 import de.jordsand.birdcensus.core.WatchList;
@@ -637,7 +638,9 @@ public class SQLiteBirdCountRepository implements BirdCountRepository {
         MonitoringArea fetchAssociatedMonitoringArea(String code) {
             String[] projection = {
                     BirdCountContract.MonitoringArea.COLUMN_NAME_CODE,
-                    BirdCountContract.MonitoringArea.COLUMN_NAME_NAME
+                    BirdCountContract.MonitoringArea.COLUMN_NAME_NAME,
+                    BirdCountContract.MonitoringArea.COLUMN_NAME_LAT,
+                    BirdCountContract.MonitoringArea.COLUMN_NAME_LON
             };
             String selection = BirdCountContract.MonitoringArea.COLUMN_NAME_CODE + " = ?";
             String[] selectionArgs = { code };
@@ -658,8 +661,14 @@ public class SQLiteBirdCountRepository implements BirdCountRepository {
             String name = cursor.getString(
                     cursor.getColumnIndexOrThrow(BirdCountContract.MonitoringArea.COLUMN_NAME_NAME)
             );
+            double lat = cursor.getDouble(
+                    cursor.getColumnIndexOrThrow(BirdCountContract.MonitoringArea.COLUMN_NAME_LAT)
+            );
+            double lon = cursor.getDouble(
+                    cursor.getColumnIndexOrThrow(BirdCountContract.MonitoringArea.COLUMN_NAME_LON)
+            );
             cursor.close();
-            return new MonitoringArea(name, code);
+            return new MonitoringArea(name, code, new Location(lat, lon));
         }
 
         /**

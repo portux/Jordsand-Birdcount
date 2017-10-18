@@ -13,8 +13,8 @@ import java.util.List;
 public class MonitoringStation extends MonitoringArea {
     private List<MonitoringArea> observedAreas;
 
-    public MonitoringStation(@NonNull String name, @NonNull String code) {
-        super(name, code);
+    public MonitoringStation(@NonNull String name, @NonNull String code, @NonNull Location location) {
+        super(name, code, location);
         this.observedAreas = new ArrayList<>();
     }
 

@@ -20,6 +20,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import de.jordsand.birdcensus.core.Location;
 import de.jordsand.birdcensus.core.MonitoringArea;
 import de.jordsand.birdcensus.infrastructure.MalformedXMLException;
 import de.jordsand.birdcensus.infrastructure.XMLParser;
@@ -34,6 +35,9 @@ public class MonitoringAreaParser implements XMLParser<MonitoringArea> {
     private static final String AREA_TAG = "MonitoringArea";
     private static final String AREA_NAME_ATTR = "name";
     private static final String AREA_CODE_ATTR = "code";
+    private static final String POSITION_TAG = "position";
+    private static final String POSITION_LON_ATTR = "lon";
+    private static final String POSITION_LAT_ATTR = "lat";
 
     @Override
     public List<MonitoringArea> parse(InputStream in) {
@@ -97,9 +101,54 @@ public class MonitoringAreaParser implements XMLParser<MonitoringArea> {
         }
 
         if (name == null || code == null) {
-            throw new MalformedXMLException();
+            throw new MalformedXMLException("Missing name or code attribute");
         }
-        return new MonitoringArea(name, code);
+
+        Location location = readLocation(node);
+
+        return new MonitoringArea(name, code, location);
+    }
+
+    /**
+     * Extracts the position from an area node. The position is expected to be a sub-node.
+     * @param node the node
+     * @return the location
+     * @throws MalformedXMLException if the node did not match the expected XML schema
+     */
+    private Location readLocation(Node node) {
+        NodeList childNodes = node.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); ++i) {
+            Node child = childNodes.item(i);
+            if (child.getNodeName().equals(POSITION_TAG)) {
+                return readLocationAttributes(child);
+            }
+        }
+        throw new MalformedXMLException("Missing position node");
+    }
+
+    /**
+     * Extracts the position from an XML node
+     * @param node the node
+     * @return the location
+     * @throws MalformedXMLException if the node did not match the expected XML schema
+     */
+    private Location readLocationAttributes(Node node) {
+        Double lon = null, lat = null;
+        NamedNodeMap attributes = node.getAttributes();
+        for (int i = 0; i < attributes.getLength(); ++i) {
+            Node attr = attributes.item(i);
+            String attrName = attr.getNodeName();
+            if (attrName.equals(POSITION_LON_ATTR)) {
+                lon = Double.parseDouble(attr.getNodeValue());
+            } else if (attrName.equals(POSITION_LAT_ATTR)) {
+                lat = Double.parseDouble(attr.getNodeValue());
+            }
+        }
+
+        if (lon == null || lat == null) {
+            throw new MalformedXMLException("Missing latitude or longitude attribute");
+        }
+        return new Location(lat, lon);
     }
 
 }

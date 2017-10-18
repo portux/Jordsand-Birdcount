@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.jordsand.birdcensus.core.Location;
 import de.jordsand.birdcensus.core.MonitoringArea;
 import de.jordsand.birdcensus.core.MonitoringAreaRepository;
 import de.jordsand.birdcensus.database.BirdCountContract;
@@ -29,7 +30,9 @@ public class SQLiteMonitoringAreaRepository implements MonitoringAreaRepository 
     public MonitoringArea findByName(@NonNull String name) {
         String[] projection = {
                 BirdCountContract.MonitoringArea.COLUMN_NAME_NAME,
-                BirdCountContract.MonitoringArea.COLUMN_NAME_CODE
+                BirdCountContract.MonitoringArea.COLUMN_NAME_CODE,
+                BirdCountContract.MonitoringArea.COLUMN_NAME_LON,
+                BirdCountContract.MonitoringArea.COLUMN_NAME_LAT
         };
         String selection = BirdCountContract.MonitoringArea.COLUMN_NAME_NAME + " = ?";
         String[] selectionArgs = { name };
@@ -80,7 +83,9 @@ public class SQLiteMonitoringAreaRepository implements MonitoringAreaRepository 
     public MonitoringArea findOne(String code) {
         String[] projection = {
                 BirdCountContract.MonitoringArea.COLUMN_NAME_NAME,
-                BirdCountContract.MonitoringArea.COLUMN_NAME_CODE
+                BirdCountContract.MonitoringArea.COLUMN_NAME_CODE,
+                BirdCountContract.MonitoringArea.COLUMN_NAME_LON,
+                BirdCountContract.MonitoringArea.COLUMN_NAME_LAT
         };
         String selection = BirdCountContract.MonitoringArea.COLUMN_NAME_CODE + " = ?";
         String[] selectionArgs = { code };
@@ -103,7 +108,9 @@ public class SQLiteMonitoringAreaRepository implements MonitoringAreaRepository 
     public Iterable<MonitoringArea> findAll() {
         String[] projection = {
                 BirdCountContract.MonitoringArea.COLUMN_NAME_NAME,
-                BirdCountContract.MonitoringArea.COLUMN_NAME_CODE
+                BirdCountContract.MonitoringArea.COLUMN_NAME_CODE,
+                BirdCountContract.MonitoringArea.COLUMN_NAME_LON,
+                BirdCountContract.MonitoringArea.COLUMN_NAME_LAT
         };
 
         Cursor result = db.query(
@@ -138,6 +145,8 @@ public class SQLiteMonitoringAreaRepository implements MonitoringAreaRepository 
         ContentValues values = new ContentValues();
         values.put(BirdCountContract.MonitoringArea.COLUMN_NAME_CODE, area.getCode());
         values.put(BirdCountContract.MonitoringArea.COLUMN_NAME_NAME, area.getName());
+        values.put(BirdCountContract.MonitoringArea.COLUMN_NAME_LAT, area.getLocation().getLatitude());
+        values.put(BirdCountContract.MonitoringArea.COLUMN_NAME_LON, area.getLocation().getLongitude());
         return values;
     }
 
@@ -153,9 +162,12 @@ public class SQLiteMonitoringAreaRepository implements MonitoringAreaRepository 
 
         final int CODE_IDX = data.getColumnIndexOrThrow(BirdCountContract.MonitoringArea.COLUMN_NAME_CODE);
         final int NAME_IDX = data.getColumnIndexOrThrow(BirdCountContract.MonitoringArea.COLUMN_NAME_NAME);
+        final int LAT_IDX = data.getColumnIndexOrThrow(BirdCountContract.MonitoringArea.COLUMN_NAME_LAT);
+        final int LON_IDX = data.getColumnIndexOrThrow(BirdCountContract.MonitoringArea.COLUMN_NAME_LON);
         String code = data.getString(CODE_IDX);
         String name = data.getString(NAME_IDX);
+        Location location = new Location(data.getDouble(LAT_IDX), data.getDouble(LON_IDX));
 
-        return new MonitoringArea(name, code);
+        return new MonitoringArea(name, code, location);
     }
 }

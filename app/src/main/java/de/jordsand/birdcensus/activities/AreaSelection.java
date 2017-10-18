@@ -19,11 +19,23 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import org.osmdroid.api.IMapController;
+import org.osmdroid.tileprovider.tilesource.XYTileSource;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.ItemizedIconOverlay;
+import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
+import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.OverlayItem;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import de.jordsand.birdcensus.R;
+import de.jordsand.birdcensus.core.Location;
 import de.jordsand.birdcensus.core.MonitoringArea;
 import de.jordsand.birdcensus.database.BirdCountOpenHandler;
 import de.jordsand.birdcensus.database.repositories.SQLiteMonitoringAreaRepository;
@@ -39,12 +51,15 @@ import de.jordsand.birdcensus.services.SimpleBirdCountService;
  */
 public class AreaSelection extends AppCompatActivity {
     private static final int RQ_ADD_SIGHTINGS = 555;
+    private static final int AVG_MONITORING_AREAS = 25;
+    private static final int MIN_ZOOM = 1;
+    private static final int MAX_ZOOM = 20;
+    private static final int TILE_SIZE = 256;
 
     private SimpleBirdCountService birdCountService;
     private boolean mBound = false;
 
-    private GridView grid;
-    private AreaAdapter adapter;
+    private MapView areaMap;
     private SQLiteMonitoringAreaRepository repo;
 
     @Override
@@ -55,10 +70,17 @@ public class AreaSelection extends AppCompatActivity {
         BirdCountOpenHandler openHandler = BirdCountOpenHandler.instance(this);
         repo = new SQLiteMonitoringAreaRepository(openHandler.getReadableDatabase());
 
-        grid = (GridView) findViewById(R.id.area_selection);
-        adapter = new AreaAdapter(this, repo.findAll());
-        grid.setAdapter(adapter);
-        grid.setOnItemClickListener(new AreaGridOnClickListener());
+        areaMap = (MapView) findViewById(R.id.area_map);
+        areaMap.setTileSource(new XYTileSource("4uMaps", MIN_ZOOM, MAX_ZOOM, TILE_SIZE, ".png", new String[]{}));
+        areaMap.setBuiltInZoomControls(true);
+        areaMap.setMultiTouchControls(true);
+
+        IMapController mapController = areaMap.getController();
+        mapController.setZoom(15);
+        GeoPoint startPoint = new GeoPoint(54.6862, 10.0339);
+        mapController.setCenter(startPoint);
+
+        this.initMap();
     }
 
     @Override
@@ -166,69 +188,43 @@ public class AreaSelection extends AppCompatActivity {
     };
 
     /**
-     * Adapter for the area view
+     * Adds the monitoring areas to the maps
      */
-    private class AreaAdapter extends BaseAdapter {
-        private LayoutInflater inflater;
+    private void initMap() {
+        Marker.ENABLE_TEXT_LABELS_WHEN_NO_IMAGE = true;
 
-        private List<MonitoringArea> monitoringAreas;
+        for (MonitoringArea area : repo.findAll()) {
+            GeoPoint location = new GeoPoint(area.getLocation().getLatitude(), area.getLocation().getLongitude());
+            Marker marker = new Marker(areaMap);
 
-        AreaAdapter(Context ctx, Iterable<MonitoringArea> areas) {
-            inflater = LayoutInflater.from(ctx);
-            monitoringAreas = new LinkedList<>();
-            for (MonitoringArea a : areas) {
-                monitoringAreas.add(a);
-            }
-        }
+            marker.setPosition(location);
+            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+            marker.setTitle(area.getCode());
+            marker.setIcon(null);
 
-        @Override
-        public int getCount() {
-            return monitoringAreas.size();
-        }
+            marker.setOnMarkerClickListener(new AreaSelectionListener(area));
 
-        @Override
-        public Object getItem(int i) {
-            return monitoringAreas.get(i);
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return i;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder;
-            if (convertView == null) {
-                convertView = inflater.inflate(R.layout.monitoring_areas_list, parent, false);
-                holder = new ViewHolder();
-                holder.name = convertView.findViewById(R.id.areas_list_name);
-                holder.code = convertView.findViewById(R.id.areas_list_code);
-                convertView.setTag(holder);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-            MonitoringArea area = (MonitoringArea) getItem(position);
-            holder.name.setText(area.getName());
-            holder.code.setText(area.getCode());
-            return convertView;
-        }
-
-        class ViewHolder {
-            TextView name, code;
+            areaMap.getOverlays().add(marker);
         }
     }
 
     /**
-     * Handler for click events on a specific monitoring area
+     * Listener for the monitoring area's on the map
      */
-    private class AreaGridOnClickListener implements AdapterView.OnItemClickListener {
+    private class AreaSelectionListener implements Marker.OnMarkerClickListener {
+        private MonitoringArea area;
+
+        AreaSelectionListener(MonitoringArea area) {
+            this.area = area;
+        }
+
         @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            MonitoringArea selectedArea = (MonitoringArea) adapter.getItem(position);
+        public boolean onMarkerClick(Marker marker, MapView mapView) {
             Intent addSightings = new Intent(AreaSelection.this, AddSighting.class);
-            addSightings.putExtra("area", selectedArea.getCode());
+            addSightings.putExtra("area", area.getCode());
             startActivityForResult(addSightings, RQ_ADD_SIGHTINGS);
+            return true;
         }
     }
+
 }
