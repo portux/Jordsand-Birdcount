@@ -166,7 +166,7 @@ public class NewCensus extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             initBirdCount();
-            Intent areaSelection = new Intent(NewCensus.this, AreaSelection.class);
+            Intent areaSelection = new Intent(NewCensus.this, AreaSelectionMap.class);
             startActivityForResult(areaSelection, RQ_NEW_CENSUS);
         }
 

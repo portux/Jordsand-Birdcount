@@ -43,6 +43,7 @@
     <!-- area selection -->
     <string name="area_selection_code_preview">Code</string>
     <string name="area_selection_name_preview">Area name</string>
+    <string name="area_selection_list">Show list</string>
 
     <!-- add sightings -->
     <string name="add_sighting_search">Search for a species</string>

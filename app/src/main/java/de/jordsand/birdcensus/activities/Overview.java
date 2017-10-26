@@ -202,7 +202,7 @@ public class Overview extends AppCompatActivity {
     private class ContinueCensusBtnOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            Intent continueCensus = new Intent(Overview.this, AreaSelection.class);
+            Intent continueCensus = new Intent(Overview.this, AreaSelectionMap.class);
             startActivityForResult(continueCensus, RQ_CONTINUE_CENSUS);
         }
     }

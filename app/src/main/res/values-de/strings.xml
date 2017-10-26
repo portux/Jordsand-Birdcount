@@ -133,4 +133,5 @@
     </string-array>
 
     <string name="service_description">Der Service speichert die aktuelle Vogelzählung und greift auf die Datenbank zu</string>
+    <string name="area_selection_list">Liste anzeigen</string>
 </resources>

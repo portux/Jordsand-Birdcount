@@ -34,7 +34,7 @@
                 android:value="de.jordsand.birdcensus.activities.Overview" />
         </activity>
         <activity
-            android:name=".activities.AreaSelection"
+            android:name=".activities.AreaSelectionMap"
             android:label="@string/title_activity_area_selection"
             android:parentActivityName=".activities.Overview"
             android:theme="@style/AppTheme">
@@ -45,11 +45,11 @@
         <activity
             android:name=".activities.AddSighting"
             android:label="@string/title_activity_add_sighting"
-            android:parentActivityName=".activities.AreaSelection"
+            android:parentActivityName=".activities.AreaSelectionMap"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.jordsand.birdcensus.activities.AreaSelection" />
+                android:value="de.jordsand.birdcensus.activities.AreaSelectionMap" />
         </activity>
         <activity
             android:name=".activities.SpeciesCounter"
@@ -69,7 +69,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.jordsand.birdcensus.activities.AddSighting" />
         </activity>
-
         <activity
             android:name=".activities.CensusDisplay"
             android:label="@string/title_activity_census_display"
@@ -85,6 +84,7 @@
             android:description="@string/service_description"
             android:exported="false" />
 
+        <activity android:name=".activities.AreaSelectionList"></activity>
     </application>
 
 </manifest>
