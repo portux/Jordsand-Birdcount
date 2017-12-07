@@ -26,7 +26,6 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -34,8 +33,10 @@ import java.util.List;
 import java.util.Locale;
 
 import de.jordsand.birdcensus.R;
+import de.jordsand.birdcensus.core.MonitoringArea;
 import de.jordsand.birdcensus.core.Species;
 import de.jordsand.birdcensus.database.BirdCountOpenHandler;
+import de.jordsand.birdcensus.database.repositories.SQLiteMonitoringAreaRepository;
 import de.jordsand.birdcensus.database.repositories.SQLiteSpeciesRepository;
 import de.jordsand.birdcensus.fragments.SelectSpeciesCount;
 import de.jordsand.birdcensus.services.SimpleBirdCountService;
@@ -60,9 +61,10 @@ public class AddSighting extends AppCompatActivity implements SelectSpeciesCount
     private SpeciesAdapter adapter;
     private Button newSpecies;
     private EditText search;
-    private SQLiteSpeciesRepository repo;
+    private SQLiteSpeciesRepository speciesRepo;
+    private SQLiteMonitoringAreaRepository areaRepo;
 
-    private String monitoringArea;
+    private MonitoringArea monitoringArea;
     private Species selectedSpecies;
 
     @Override
@@ -71,20 +73,22 @@ public class AddSighting extends AppCompatActivity implements SelectSpeciesCount
         setContentView(R.layout.activity_add_sighting);
 
         BirdCountOpenHandler openHandler = BirdCountOpenHandler.instance(this);
-        repo = new SQLiteSpeciesRepository(openHandler.getReadableDatabase());
+        speciesRepo = new SQLiteSpeciesRepository(openHandler.getReadableDatabase());
+        areaRepo = new SQLiteMonitoringAreaRepository(openHandler.getReadableDatabase());
 
         newSpecies = (Button) findViewById(R.id.new_species);
         newSpecies.setOnClickListener(new NewSpeciesOnClickListener());
 
         list = (ListView) findViewById(R.id.species);
-        adapter = new SpeciesAdapter(this, repo.findAll());
+        adapter = new SpeciesAdapter(this, speciesRepo.findAll());
         list.setAdapter(adapter);
         list.setOnItemClickListener(new SpeciesListOnClickListener());
 
         search = (EditText) findViewById(R.id.search_species);
         search.addTextChangedListener(new SearchTextWatcher());
 
-        monitoringArea = getIntent().getStringExtra("area");
+        monitoringArea = areaRepo.findOne(getIntent().getStringExtra("area"));
+        setTitle(monitoringArea.getName());
     }
 
     @Override
@@ -143,7 +147,7 @@ public class AddSighting extends AppCompatActivity implements SelectSpeciesCount
 
     @Override
     public void onSpeciesCountSelected(int count) {
-        birdCountService.addSightingToCurrentBirdCount(monitoringArea, selectedSpecies, count);
+        birdCountService.addSightingToCurrentBirdCount(monitoringArea.getCode(), selectedSpecies, count);
         selectedSpecies = null;
         adapter.notifyDataSetChanged();
     }
@@ -151,13 +155,13 @@ public class AddSighting extends AppCompatActivity implements SelectSpeciesCount
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RQ_NEW_SPECIES && resultCode == RESULT_OK) {
-            adapter.setData(repo.findAll());
+            adapter.setData(speciesRepo.findAll());
             adapter.notifyDataSetChanged();
         } else if (requestCode == RQ_SPECIES_COUNT && resultCode == RESULT_OK) {
 
         } else if (requestCode == RQ_COUNTER && resultCode == RESULT_OK) {
             int count = data.getIntExtra("count", 0);
-            birdCountService.addSightingToCurrentBirdCount(monitoringArea, selectedSpecies, count);
+            birdCountService.addSightingToCurrentBirdCount(monitoringArea.getCode(), selectedSpecies, count);
             selectedSpecies = null;
             adapter.notifyDataSetChanged();
             counterDialog.dismissAllowingStateLoss();
@@ -313,7 +317,7 @@ public class AddSighting extends AppCompatActivity implements SelectSpeciesCount
         @Override
         public void onClick(View view) {
             Intent createSpecies = new Intent(AddSighting.this, NewSpecies.class);
-            createSpecies.putExtra("area_code", monitoringArea);
+            createSpecies.putExtra("area_code", monitoringArea.getCode());
             startActivityForResult(createSpecies, RQ_NEW_SPECIES);
         }
     }
