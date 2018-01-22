@@ -1,4 +1,4 @@
-package de.jordsand.birdcensus.services;
+package de.jordsand.birdcensus.services.census;
 
 import android.app.Service;
 import android.content.Intent;
@@ -10,7 +10,6 @@ import android.support.v4.util.LongSparseArray;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import de.jordsand.birdcensus.core.BirdCount;

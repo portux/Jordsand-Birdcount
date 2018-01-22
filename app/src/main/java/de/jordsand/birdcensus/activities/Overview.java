@@ -25,9 +25,10 @@ import de.jordsand.birdcensus.database.BirdCountOpenHandler;
 import de.jordsand.birdcensus.database.repositories.SQLiteMonitoringAreaRepository;
 import de.jordsand.birdcensus.database.repositories.SQLiteSpeciesRepository;
 import de.jordsand.birdcensus.database.repositories.setup.DatabaseInflater;
-import de.jordsand.birdcensus.services.OfflineMapSetupService;
-import de.jordsand.birdcensus.services.OsmDroidOfflineMapSetupService;
-import de.jordsand.birdcensus.services.SimpleBirdCountService;
+import de.jordsand.birdcensus.services.census.BirdCountService;
+import de.jordsand.birdcensus.services.maps.OfflineMapSetupService;
+import de.jordsand.birdcensus.services.maps.OsmDroidOfflineMapSetupService;
+import de.jordsand.birdcensus.services.census.SimpleBirdCountService;
 
 /**
  * Main activity.
@@ -149,7 +150,7 @@ public class Overview extends AppCompatActivity {
     }
 
     /**
-     * Connection to the {@link de.jordsand.birdcensus.services.BirdCountService}
+     * Connection to the {@link BirdCountService}
      */
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override

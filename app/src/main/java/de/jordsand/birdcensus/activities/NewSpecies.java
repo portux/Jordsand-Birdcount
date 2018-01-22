@@ -17,8 +17,8 @@ import android.widget.EditText;
 import de.jordsand.birdcensus.R;
 import de.jordsand.birdcensus.core.ExistingSpeciesException;
 import de.jordsand.birdcensus.core.Species;
-import de.jordsand.birdcensus.services.BirdCountService;
-import de.jordsand.birdcensus.services.SimpleBirdCountService;
+import de.jordsand.birdcensus.services.census.BirdCountService;
+import de.jordsand.birdcensus.services.census.SimpleBirdCountService;
 
 /**
  * Adds a new species to the database
@@ -134,7 +134,7 @@ public class NewSpecies extends AppCompatActivity {
     }
 
     /**
-     * Connection to the {@link de.jordsand.birdcensus.services.BirdCountService}
+     * Connection to the {@link BirdCountService}
      */
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
