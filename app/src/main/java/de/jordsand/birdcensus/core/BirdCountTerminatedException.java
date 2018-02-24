@@ -6,17 +6,26 @@ package de.jordsand.birdcensus.core;
  */
 
 public class BirdCountTerminatedException extends IllegalStateException {
-    public BirdCountTerminatedException() {}
+    private final BirdCount birdCount;
 
-    public BirdCountTerminatedException(String message) {
+    public BirdCountTerminatedException(BirdCount birdCount) {
+        this.birdCount = birdCount;
+    }
+
+    public BirdCountTerminatedException(BirdCount birdCount, String message) {
         super(message);
+        this.birdCount = birdCount;
     }
 
-    public BirdCountTerminatedException(String message, Throwable cause) {
-        super(message, cause);
+    public BirdCount getCausingBirdCount() {
+        return birdCount;
     }
 
-    public BirdCountTerminatedException(Throwable cause) {
-        super(cause);
+    @Override
+    public String toString() {
+        return "BirdCountTerminatedException{" +
+                "message=" + getMessage() +
+                ", birdCount=" + birdCount +
+                '}';
     }
 }
