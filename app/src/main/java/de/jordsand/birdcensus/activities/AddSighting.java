@@ -39,7 +39,7 @@ import de.jordsand.birdcensus.database.BirdCountOpenHandler;
 import de.jordsand.birdcensus.database.repositories.SQLiteMonitoringAreaRepository;
 import de.jordsand.birdcensus.database.repositories.SQLiteSpeciesRepository;
 import de.jordsand.birdcensus.fragments.SelectSpeciesCount;
-import de.jordsand.birdcensus.services.SimpleBirdCountService;
+import de.jordsand.birdcensus.services.census.SimpleBirdCountService;
 
 /**
  * Shows a list of all species available, enabling the user to add new sightings
