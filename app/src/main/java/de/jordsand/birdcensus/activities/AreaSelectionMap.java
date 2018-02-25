@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,11 +15,21 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.tileprovider.tilesource.XYTileSource;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.simplefastpoint.LabelledGeoPoint;
+import org.osmdroid.views.overlay.simplefastpoint.SimpleFastPointOverlay;
+import org.osmdroid.views.overlay.simplefastpoint.SimpleFastPointOverlayOptions;
+import org.osmdroid.views.overlay.simplefastpoint.SimplePointTheme;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import de.jordsand.birdcensus.R;
 import de.jordsand.birdcensus.core.MonitoringArea;
@@ -36,10 +48,10 @@ import de.jordsand.birdcensus.services.census.SimpleBirdCountService;
 public class AreaSelectionMap extends AppCompatActivity {
     private static final int RQ_ADD_SIGHTINGS = 555;
     private static final int RQ_AREA_LIST = 666;
-    private static final int AVG_MONITORING_AREAS = 25;
     private static final int MIN_ZOOM = 1;
     private static final int MAX_ZOOM = 20;
     private static final int TILE_SIZE = 256;
+    private static final String MAP_LABEL_COLOR = "#ff0000";
 
     private SimpleBirdCountService birdCountService;
     private boolean mBound = false;
@@ -176,43 +188,68 @@ public class AreaSelectionMap extends AppCompatActivity {
         }
     };
 
+    // TODO introduce a repository cache instead of caching manually (as proxy for the repo access)
+
     /**
      * Adds the monitoring areas to the maps
      */
     private void initMap() {
         Marker.ENABLE_TEXT_LABELS_WHEN_NO_IMAGE = true;
 
+        List<IGeoPoint> areaPoints = new ArrayList<>();
+        List<MonitoringArea> areas = new ArrayList<>();
+
         for (MonitoringArea area : repo.findAll()) {
-            GeoPoint location = new GeoPoint(area.getLocation().getLatitude(), area.getLocation().getLongitude());
-            Marker marker = new Marker(areaMap);
-
-            marker.setPosition(location);
-            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-            marker.setTitle(area.getCode());
-            marker.setIcon(null);
-
-            marker.setOnMarkerClickListener(new AreaSelectionListener(area));
-
-            areaMap.getOverlays().add(marker);
+            areaPoints.add(new LabelledGeoPoint(area.getLocation().getLatitude(), area.getLocation().getLongitude(), area.getCode()));
+            areas.add(area);
         }
+
+        // set the label style
+        SimplePointTheme pointTheme = new SimplePointTheme(areaPoints, true);
+        Paint labelStyle = new Paint();
+        labelStyle.setStyle(Paint.Style.FILL);
+        labelStyle.setColor(Color.parseColor(MAP_LABEL_COLOR));
+        labelStyle.setTextAlign(Paint.Align.CENTER);
+        labelStyle.setTextSize(24f);
+
+        // set the label behaviour
+        SimpleFastPointOverlayOptions overlayOptions = SimpleFastPointOverlayOptions.getDefaultStyle() //
+                .setAlgorithm(SimpleFastPointOverlayOptions.RenderingAlgorithm.MAXIMUM_OPTIMIZATION) //
+                .setRadius(10) //
+                .setIsClickable(true) //
+                .setCellSize(15) //
+                .setTextStyle(labelStyle);
+
+        SimpleFastPointOverlay overlay = new SimpleFastPointOverlay(pointTheme, overlayOptions);
+        overlay.setOnClickListener(new AreaSelectionListener(areas));
+        areaMap.getOverlays().add(overlay);
     }
 
     /**
      * Listener for the monitoring area's on the map
      */
-    private class AreaSelectionListener implements Marker.OnMarkerClickListener {
-        private MonitoringArea area;
+    private class AreaSelectionListener implements SimpleFastPointOverlay.OnClickListener {
 
-        AreaSelectionListener(MonitoringArea area) {
-            this.area = area;
+        private Map<String, MonitoringArea> areas;
+
+        AreaSelectionListener(List<MonitoringArea> areas) {
+            this.areas = new HashMap<>(areas.size());
+
+            for (MonitoringArea area : areas) {
+                this.areas.put(area.getCode(), area);
+            }
+
         }
 
         @Override
-        public boolean onMarkerClick(Marker marker, MapView mapView) {
+        public void onClick(SimpleFastPointOverlay.PointAdapter points, Integer point) {
+            LabelledGeoPoint geoPoint = (LabelledGeoPoint) points.get(point);
+
+            MonitoringArea area = areas.get(geoPoint.getLabel());
+
             Intent addSightings = new Intent(AreaSelectionMap.this, AddSighting.class);
             addSightings.putExtra("area", area.getCode());
             startActivityForResult(addSightings, RQ_ADD_SIGHTINGS);
-            return true;
         }
     }
 
