@@ -53,6 +53,16 @@ public class Assert {
     }
 
     /**
+     * @param val the value to check
+     * @throws IllegalArgumentException if {@code val ≤ 0}
+     */
+    public static void positive(int val) {
+        if (val < 1) {
+            reportFailure("Value was 0 or negative");
+        }
+    }
+
+    /**
      * Throws an {@link IllegalArgumentException} followed by a generic and a specific description
      * @param message the specific part of the exception message
      */

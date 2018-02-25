@@ -1,6 +1,9 @@
 package de.jordsand.birdcensus.activities;
 
+import android.content.DialogInterface;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -13,11 +16,22 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.Date;
 
 import de.jordsand.birdcensus.R;
+import de.jordsand.birdcensus.core.BirdCount;
+import de.jordsand.birdcensus.core.BirdCountRepository;
+import de.jordsand.birdcensus.database.BirdCountOpenHandler;
+import de.jordsand.birdcensus.database.repositories.SQLiteBirdCountRepository;
 import de.jordsand.birdcensus.fragments.CensusDisplayDetailsFragment;
 import de.jordsand.birdcensus.fragments.CensusDisplayOverviewFragment;
+import de.jordsand.birdcensus.services.exporter.csv.CsvBirdCountExporter;
+import de.jordsand.birdcensus.services.exporter.csv.ExportException;
+import de.jordsand.birdcensus.util.FileSystem;
 
 /**
  * Showing a past bird count.
@@ -28,9 +42,12 @@ import de.jordsand.birdcensus.fragments.CensusDisplayOverviewFragment;
  * @author Rico Bergmann
  */
 public class CensusDisplay extends AppCompatActivity {
+    private static final String TAG = CensusDisplay.class.getSimpleName();
     private static final int TABS_COUNT = 2;
     private static final int TAB_OVERVIEW_POSITION = 0;
     private static final int TAB_DETAILS_POSITION = 1;
+
+    private BirdCountRepository birdCountRepo;
 
     private Date censusStartDate;
 
@@ -56,11 +73,13 @@ public class CensusDisplay extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        try {
+
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        } catch (NullPointerException e) {
-            ;
         }
+
+        BirdCountOpenHandler openHandler = BirdCountOpenHandler.instance(this);
+        birdCountRepo = new SQLiteBirdCountRepository(openHandler.getReadableDatabase());
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -87,7 +106,126 @@ public class CensusDisplay extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        BirdCount birdCount;
+        boolean successful;
+        switch (item.getItemId()) {
+            case R.id.export_census_complete:
+                birdCount = birdCountRepo.findByStartDate(censusStartDate);
+                successful = exportCensusComplete(birdCount);
+                alertExportFinished(successful);
+                break;
+            case R.id.export_census_summary:
+                birdCount = birdCountRepo.findByStartDate(censusStartDate);
+                successful = exportCensusSummary(birdCount);
+                alertExportFinished(successful);
+                break;
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Creates a CSV-file containing all the summary of the displayed bird count
+     * @param birdCount the bird count to export
+     * @return whether the export succeeded
+     */
+    private boolean exportCensusSummary(BirdCount birdCount) {
+        File documentDir = FileSystem.getDocumentDirectoryRoot();
+        String filename = generateExportFilename(birdCount, getString(R.string.census_export_summary_suffix), documentDir);
+        File exportFile = new File(documentDir, filename);
+
+        try {
+            if (!exportFile.exists()) {
+                exportFile.createNewFile();
+            }
+            FileOutputStream fos = new FileOutputStream(exportFile);
+            CsvBirdCountExporter exporter = new CsvBirdCountExporter(new OutputStreamWriter(fos), this);
+            exporter.exportBirdCountSummary(birdCount);
+        } catch (IOException | ExportException e) {
+            Log.d(TAG, e.toString());
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Creates a CSV-file containing all the sightings for the displayed bird count
+     * @param birdCount the bird count to export
+     * @return whether the export succeeded
+     */
+    private boolean exportCensusComplete(BirdCount birdCount) {
+        File documentDir = FileSystem.getDocumentDirectoryRoot();
+        String filename = generateExportFilename(birdCount, getString(R.string.census_export_complete_suffix), documentDir);
+        File exportFile = new File(documentDir, filename);
+
+        try {
+            if (!exportFile.exists()) {
+                exportFile.createNewFile();
+            }
+            FileOutputStream fos = new FileOutputStream(exportFile);
+            CsvBirdCountExporter exporter = new CsvBirdCountExporter(new OutputStreamWriter(fos), this);
+            exporter.exportCompleteBirdCount(birdCount);
+        } catch (IOException | ExportException e) {
+            Log.d(TAG, e.toString());
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Creates the name for the CSV file to contain the bird count.
+     * It is guaranteed to not conflict with any existing files.
+     * @param birdCount the bird count to export+
+     * @param suffix the file name suffix (e.g. "<em>summary</em>" or "<em>complete</em>")
+     * @param path where the file will be created. This parameter is especially important to
+     *             generate a unique file name
+     * @return the file name
+     */
+    @NonNull
+    private String generateExportFilename(BirdCount birdCount, String suffix, @NonNull File path) {
+        String fileType = ".csv";
+        String prefix = getString(R.string.census_export_prefix);
+        String date = String.format(getString(R.string.census_export_date_pattern), birdCount.getStartTime(), birdCount.getStartTime(), birdCount.getStartTime());
+        String separator = getString(R.string.census_export_fname_separator);
+
+        String filename = prefix + separator + date + separator + suffix;
+
+        File file = new File(path, filename + fileType);
+        int exportNumber = file.exists() ? 1 : -1;
+
+        while (file.exists()) {
+            exportNumber++;
+            String fname = filename + separator + exportNumber + fileType;
+            file = new File(path, fname);
+        }
+
+        if (exportNumber > -1) {
+            filename += separator + exportNumber;
+        }
+
+        return filename + fileType;
+    }
+
+    /**
+     * Displays an {@link AlertDialog} to notify the user about the termination of the export
+     * @param successful whether the export finished without any errors
+     */
+    private void alertExportFinished(boolean successful) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        if (successful) {
+            alertDialog.setMessage(R.string.census_export_success);
+            alertDialog.setIcon(R.drawable.ic_info);
+        } else {
+            alertDialog.setMessage(R.string.census_export_error);
+            alertDialog.setIcon(R.drawable.ic_warning);
+        }
+        alertDialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alertDialog.show();
     }
 
     /**
