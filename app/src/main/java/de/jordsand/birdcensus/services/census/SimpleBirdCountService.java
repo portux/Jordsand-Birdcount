@@ -144,9 +144,9 @@ public class SimpleBirdCountService extends Service implements BirdCountService 
     @Nullable @Override
     public Species addNewSpecies(@NonNull String name, @Nullable String scientificName) {
         if (scientificName != null && !scientificName.isEmpty() && speciesRepository.findByScientificName(scientificName) != null) {
-            throw new ExistingSpeciesException(String.format("There already is such a species (%s, %s)", name, scientificName));
+            throw new ExistingSpeciesException(new Species(name, scientificName));
         } else if (scientificName != null && scientificName.isEmpty() && !speciesRepository.findByName(name).isEmpty()) {
-            throw new ExistingSpeciesException(String.format("There already is such a species (%s, %s)", name, scientificName));
+            throw new ExistingSpeciesException(new Species(name, scientificName));
         }
 
         Species species = new Species(name, scientificName);
