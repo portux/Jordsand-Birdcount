@@ -12,6 +12,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -53,7 +54,6 @@ public class SelectSpeciesCount extends DialogFragment {
         count = view.findViewById(R.id.sighting_count);
         count.setFilters(new MinInputFilter[]{new MinInputFilter(MIN_SPECIES_COUNT)});
         count.setText(String.format(Locale.GERMANY, "%d", MIN_SPECIES_COUNT));
-        count.setSelection(count.getText().length());
 
         startCounter = view.findViewById(R.id.start_counter);
         startCounter.setOnClickListener(new OpenCounterOnClickListener());
@@ -73,6 +73,20 @@ public class SelectSpeciesCount extends DialogFragment {
         } catch (ClassCastException e) {
             throw new ClassCastException(ctx.toString() + " must implement NoticeDialogListener");
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        count.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                    final Dialog dialog = getDialog();
+                    dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                }
+            }
+        });
     }
 
     /**

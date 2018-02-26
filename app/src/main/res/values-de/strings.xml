@@ -13,6 +13,8 @@
     <string name="menu_terminate_census">Zählung beenden</string>
     <string name="menu_abort_census">Zählung abbrechen</string>
     <string name="menu_add_new_species">Hinzufügen</string>
+    <string name="menu_export_census_summary">Zusammenfassung exportieren</string>
+    <string name="menu_export_census_details">Vollständige Zählung exportieren</string>
 
     <!-- status -->
     <string name="terminate_bird_count">Die Vogelzählung wird beendet und kann danach nicht mehr modifiziert werden.</string>
@@ -43,6 +45,7 @@
     <!-- area selection -->
     <string name="area_selection_code_preview">Code</string>
     <string name="area_selection_name_preview">Gebietsname</string>
+    <string name="area_selection_list">Liste anzeigen</string>
 
     <!-- add sightings -->
     <string name="add_sighting_search">Art suchen</string>
@@ -69,9 +72,10 @@
     <string name="census_date">Datum</string>
     <string name="census_observer">Beobachter</string>
     <string name="total_species_count">%1$d Arten beobachtet,\n%2$d Exemplare gesamt</string>
-
-    <!-- census selection -->
-    <string name="census_selection_enter_date">Datum eingeben</string>
+    <string name="census_selection_enter_date">Datum eingeben:</string>
+    <string name="census_selection_enter_date_day">Tag</string>
+    <string name="census_selection_enter_date_month">Monat</string>
+    <string name="census_selection_enter_date_year">Jahr</string>
 
     <!-- census display -->
     <string name="census_overview">Übersicht</string>
@@ -93,6 +97,17 @@
     <string name="census_overview_observations">Beobachtungen</string>
     <string name="census_overview_different_species">Verschiedene Arten:</string>
     <string name="census_overview_total_observations">Beobachtungen insgesamt:</string>
+
+    <!-- census export -->
+    <string name="census_export_prefix">Vogelzaehlung</string>
+    <string name="census_export_success">Zählung wurde erfolgreich exporiert</string>
+    <string name="census_export_error">Beim Export ist ein unbekannter Fehler aufgetreten 😖</string>
+    <string name="census_export_summary_suffix">zusfass</string>
+    <string name="census_export_complete_suffix">vollst</string>
+    <string name="census_export_column_species">Art</string>
+    <string name="census_export_column_species_scientific">wissenschaftlich</string>
+    <string name="census_export_column_count">Anzahl</string>
+    <string name="census_export_column_area">Gebiet</string>
 
     <!-- misc -->
     <string name="ok">OK</string>
@@ -133,5 +148,5 @@
     </string-array>
 
     <string name="service_description">Der Service speichert die aktuelle Vogelzählung und greift auf die Datenbank zu</string>
-    <string name="area_selection_list">Liste anzeigen</string>
+
 </resources>

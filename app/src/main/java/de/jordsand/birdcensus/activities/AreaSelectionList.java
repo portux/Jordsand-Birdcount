@@ -27,7 +27,7 @@ import de.jordsand.birdcensus.R;
 import de.jordsand.birdcensus.core.MonitoringArea;
 import de.jordsand.birdcensus.database.BirdCountOpenHandler;
 import de.jordsand.birdcensus.database.repositories.SQLiteMonitoringAreaRepository;
-import de.jordsand.birdcensus.services.SimpleBirdCountService;
+import de.jordsand.birdcensus.services.census.SimpleBirdCountService;
 
 public class AreaSelectionList extends AppCompatActivity {
 

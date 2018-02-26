@@ -1,6 +1,5 @@
-package de.jordsand.birdcensus.services;
+package de.jordsand.birdcensus.services.maps;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 

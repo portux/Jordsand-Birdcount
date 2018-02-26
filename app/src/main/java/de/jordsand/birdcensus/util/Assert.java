@@ -6,6 +6,12 @@ package de.jordsand.birdcensus.util;
  */
 public class Assert {
 
+    public static void isTrue(boolean val) {
+        if (!val) {
+            reportFailure("Expression was false");
+        }
+    }
+
     /**
      * @param obj the object to check
      * @throws IllegalArgumentException if {@code obj == null}
@@ -30,7 +36,7 @@ public class Assert {
      * @param params the variables to check
      * @throws IllegalArgumentException if any of the parameters is {@code null}
      */
-    public static void nonNullParams(Object... params) {
+    public static void noNullParams(Object... params) {
         for (Object param : params) {
             notNull(param);
         }
@@ -43,6 +49,16 @@ public class Assert {
     public static void hasText(String str) {
         if (str == null || str.isEmpty()) {
             reportFailure("String is empty or null");
+        }
+    }
+
+    /**
+     * @param val the value to check
+     * @throws IllegalArgumentException if {@code val ≤ 0}
+     */
+    public static void positive(int val) {
+        if (val < 1) {
+            reportFailure("Value was 0 or negative");
         }
     }
 

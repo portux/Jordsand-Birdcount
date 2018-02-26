@@ -80,7 +80,7 @@
         </activity>
 
         <service
-            android:name=".services.SimpleBirdCountService"
+            android:name=".services.census.SimpleBirdCountService"
             android:description="@string/service_description"
             android:exported="false" />
 

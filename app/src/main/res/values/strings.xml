@@ -13,6 +13,8 @@
     <string name="menu_terminate_census">Terminate count</string>
     <string name="menu_abort_census">Abort count</string>
     <string name="menu_add_new_species">Add species</string>
+    <string name="menu_export_census_summary">Export summary</string>
+    <string name="menu_export_census_details">Export complete details</string>
 
     <!-- status -->
     <string name="terminate_bird_count">The count will be terminated and may not continued later on.</string>
@@ -70,9 +72,10 @@
     <string name="census_date">Date</string>
     <string name="census_observer">Observer</string>
     <string name="total_species_count">%1$d species observed,\n%2$d instances total</string>
-
-    <!-- census selection -->
-    <string name="census_selection_enter_date">Enter date</string>
+    <string name="census_selection_enter_date">Enter date:</string>
+    <string name="census_selection_enter_date_day">Day</string>
+    <string name="census_selection_enter_date_month">Month</string>
+    <string name="census_selection_enter_date_year">Year</string>
 
     <!-- census display -->
     <string name="census_overview">Overview</string>
@@ -94,6 +97,19 @@
     <string name="census_overview_observations">Observations</string>
     <string name="census_overview_different_species">Different Species:</string>
     <string name="census_overview_total_observations">Total number of observations:</string>
+
+    <!-- census export -->
+    <string name="census_export_prefix">BirdCount</string>
+    <string name="census_export_date_pattern" translatable="false">%tY_%tm_%td</string>
+    <string name="census_export_summary_suffix">summary</string>
+    <string name="census_export_complete_suffix">complete</string>
+    <string name="census_export_fname_separator" translatable="false">_</string>
+    <string name="census_export_success">Bird count was exported successfully</string>
+    <string name="census_export_error">An error occurred while exporting the bird count 😖</string>
+    <string name="census_export_column_area">Area</string>
+    <string name="census_export_column_species">Species</string>
+    <string name="census_export_column_species_scientific">Scientific</string>
+    <string name="census_export_column_count">Count</string>
 
     <!-- misc -->
     <string name="ok">OK</string>

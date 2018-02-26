@@ -1,4 +1,4 @@
-package de.jordsand.birdcensus.services;
+package de.jordsand.birdcensus.services.census;
 
 
 import android.support.annotation.NonNull;

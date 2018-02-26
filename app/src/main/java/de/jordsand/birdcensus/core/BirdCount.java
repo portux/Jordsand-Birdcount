@@ -21,7 +21,6 @@ import de.jordsand.birdcensus.util.DateConverter;
  */
 public class BirdCount {
 
-    private final DateConverter dateConverter = new DateConverter();
     private Date startTime;
     private Date endTime;
     private WeatherData weatherInfo;
@@ -215,7 +214,7 @@ public class BirdCount {
      */
     public void terminate() {
         if (isTerminated()) {
-            throw new BirdCountTerminatedException();
+            throw new BirdCountTerminatedException(this);
         }
         this.endTime = new Date();
     }
@@ -229,7 +228,7 @@ public class BirdCount {
      */
     public void addToWatchlist(@NonNull MonitoringArea place, @NonNull Species species, @IntRange(from = 1) int count) {
         if (isTerminated()) {
-            throw new BirdCountTerminatedException();
+            throw new BirdCountTerminatedException(this);
         } else if (!observedSpecies.containsKey(place)) {
             WatchList list = new WatchList();
             list.addSightingFor(species, count);
@@ -280,17 +279,13 @@ public class BirdCount {
         BirdCount birdCount = (BirdCount) o;
 
         if (!startTime.equals(birdCount.startTime)) return false;
-        if (endTime != null ? !endTime.equals(birdCount.endTime) : birdCount.endTime != null)
-            return false;
-        return observerName.equals(birdCount.observerName);
-
+        return endTime != null ? endTime.equals(birdCount.endTime) : birdCount.endTime == null;
     }
 
     @Override
     public int hashCode() {
         int result = startTime.hashCode();
         result = 31 * result + (endTime != null ? endTime.hashCode() : 0);
-        result = 31 * result + observerName.hashCode();
         return result;
     }
 

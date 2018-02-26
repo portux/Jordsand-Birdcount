@@ -5,19 +5,27 @@ package de.jordsand.birdcensus.core;
  * @author Rico Bergmann
  */
 public class ExistingSpeciesException extends RuntimeException {
-    public ExistingSpeciesException() {
+    private final Species species;
+
+    public ExistingSpeciesException(Species species) {
+        this.species = species;
     }
 
-    public ExistingSpeciesException(String message) {
+    public ExistingSpeciesException(Species species, String message) {
         super(message);
+        this.species = species;
     }
 
-    public ExistingSpeciesException(String message, Throwable cause) {
-        super(message, cause);
+    public Species getSpecies() {
+        return species;
     }
 
-    public ExistingSpeciesException(Throwable cause) {
-        super(cause);
+    @Override
+    public String toString() {
+        return "ExistingSpeciesException{" +
+                "message=" + getMessage() +
+                ", species=" + species +
+                '}';
     }
 
 }

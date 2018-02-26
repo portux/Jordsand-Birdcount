@@ -19,8 +19,8 @@ import java.util.Locale;
 
 import de.jordsand.birdcensus.R;
 import de.jordsand.birdcensus.core.WeatherData;
-import de.jordsand.birdcensus.services.SimpleBirdCountService;
-import de.jordsand.birdcensus.services.SimpleBirdCountService.BirdCountBinder;
+import de.jordsand.birdcensus.services.census.SimpleBirdCountService;
+import de.jordsand.birdcensus.services.census.SimpleBirdCountService.BirdCountBinder;
 
 /**
  * Starts a new census.

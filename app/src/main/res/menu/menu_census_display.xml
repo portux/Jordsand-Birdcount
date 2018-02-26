@@ -1,5 +1,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="de.jordsand.birdcensus.activities.CensusDisplay">
+
+    <group android:id="@+id/export_census">
+
+        <item android:id="@+id/export_census_summary"
+            android:title="@string/menu_export_census_summary" />
+        <item android:id="@+id/export_census_complete"
+            android:title="@string/menu_export_census_details" />
+
+    </group>
+
 </menu>
