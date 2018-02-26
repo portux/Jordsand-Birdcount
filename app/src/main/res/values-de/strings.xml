@@ -72,9 +72,10 @@
     <string name="census_date">Datum</string>
     <string name="census_observer">Beobachter</string>
     <string name="total_species_count">%1$d Arten beobachtet,\n%2$d Exemplare gesamt</string>
-
-    <!-- census selection -->
-    <string name="census_selection_enter_date">Datum eingeben</string>
+    <string name="census_selection_enter_date">Datum eingeben:</string>
+    <string name="census_selection_enter_date_day">Tag</string>
+    <string name="census_selection_enter_date_month">Monat</string>
+    <string name="census_selection_enter_date_year">Jahr</string>
 
     <!-- census display -->
     <string name="census_overview">Übersicht</string>

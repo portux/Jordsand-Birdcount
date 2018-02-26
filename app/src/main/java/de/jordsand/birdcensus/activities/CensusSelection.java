@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,7 +40,9 @@ public class CensusSelection extends AppCompatActivity {
     private Resources res;
     private ListView list;
     private CensusAdapter adapter;
-    private EditText search;
+    private EditText searchDay;
+    private EditText searchMonth;
+    private EditText searchYear;
     private SQLiteBirdCountRepository repo;
 
     @Override
@@ -56,8 +59,15 @@ public class CensusSelection extends AppCompatActivity {
         list.setAdapter(adapter);
         list.setOnItemClickListener(new CensusSelectionOnClickListener());
 
-        search = (EditText) findViewById(R.id.search_date);
-        search.addTextChangedListener(new SearchTextWatcher());
+
+        SearchTextWatcher textWatcher = new SearchTextWatcher();
+
+        searchDay = (EditText) findViewById(R.id.search_date_day);
+        searchDay.addTextChangedListener(textWatcher);
+        searchMonth = (EditText) findViewById(R.id.search_date_month);
+        searchMonth.addTextChangedListener(textWatcher);
+        searchYear = (EditText) findViewById(R.id.search_date_year);
+        searchYear.addTextChangedListener(textWatcher);
     }
 
     /**
@@ -66,7 +76,7 @@ public class CensusSelection extends AppCompatActivity {
     private class CensusAdapter extends BaseAdapter implements Filterable {
         private LayoutInflater inflater;
 
-        private List<Pair<String, BirdCount>> availableBirdCounts;
+        private List<BirdCount> availableBirdCounts;
         private List<BirdCount> adaptedBirdCounts;
 
         CensusAdapter(Context ctx, Iterable<BirdCount> birdCounts) {
@@ -74,7 +84,7 @@ public class CensusSelection extends AppCompatActivity {
             this.availableBirdCounts = new LinkedList<>();
             this.adaptedBirdCounts = new ArrayList<>();
             for (BirdCount bc : birdCounts) {
-                this.availableBirdCounts.add(new Pair<>(formatDate(bc.getStartTime()), bc));
+                this.availableBirdCounts.add(bc);
                 this.adaptedBirdCounts.add(bc);
             }
         }
@@ -122,11 +132,23 @@ public class CensusSelection extends AppCompatActivity {
                     FilterResults results = new FilterResults();
                     adaptedBirdCounts.clear();
 
-                    for (Pair<String, BirdCount> bcp : availableBirdCounts) {
-                        if (bcp.first.contains(charSequence)) {
-                            adaptedBirdCounts.add(bcp.second);
-                        }
+                    int day = -1;
+                    int month = -1;
+                    int year = -1;
+
+                    if (searchDay.getText().length() > 0) {
+                        day = Integer.parseInt(searchDay.getText().toString());
                     }
+
+                    if (searchMonth.getText().length() > 0) {
+                        month = Integer.parseInt(searchMonth.getText().toString());
+                    }
+
+                    if (searchYear.getText().length() > 0) {
+                        year = Integer.parseInt(searchYear.getText().toString());
+                    }
+
+                    filterBirdCounts(day, month, year);
 
                     results.count = adaptedBirdCounts.size();
                     results.values = adaptedBirdCounts;
@@ -136,6 +158,30 @@ public class CensusSelection extends AppCompatActivity {
                 @Override
                 protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
                     notifyDataSetChanged();
+                }
+
+                private void filterBirdCounts(int day, int month, int year) {
+                    for (BirdCount bc : availableBirdCounts) {
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTime(bc.getStartTime());
+
+                        int calDay = cal.get(Calendar.DAY_OF_MONTH);
+                        if (day != -1 && day != calDay) {
+                            continue;
+                        }
+
+                        int calMonth = cal.get(Calendar.MONTH) + 1;
+                        if (month != -1 && month != calMonth) {
+                            continue;
+                        }
+
+                        int calYear = cal.get(Calendar.YEAR);
+                        if (year != -1 && year != calYear && year != calYear - 2000) {
+                            continue;
+                        }
+
+                        adaptedBirdCounts.add(bc);
+                    }
                 }
             };
         }
@@ -178,7 +224,24 @@ public class CensusSelection extends AppCompatActivity {
 
         @Override
         public void afterTextChanged(Editable editable) {
-            adapter.getFilter().filter(editable.toString());
+            adapter.getFilter().filter(joinDates());
+        }
+
+        private String joinDates() {
+            String result = "";
+            if (searchDay.getText().length() > 0) {
+                result += searchDay.getText().toString() + ".";
+            }
+
+            if (searchMonth.getText().length() > 0) {
+                result += searchMonth.getText().toString() + ".";
+            }
+
+            if (searchYear.getText().length() > 0) {
+                result += searchYear.getText().toString();
+            }
+
+            return result;
         }
     }
 

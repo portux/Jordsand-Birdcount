@@ -8,36 +8,78 @@
     android:focusableInTouchMode="true"
     tools:context="de.jordsand.birdcensus.activities.CensusSelection">
 
+    <TextView
+        android:id="@+id/search_label"
+        android:layout_width="wrap_content"
+        android:layout_height="21dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/census_selection_enter_date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
-        android:id="@+id/search_date"
-        android:layout_width="0dp"
+        android:id="@+id/search_date_day"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="@string/census_selection_enter_date"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:hint="@string/census_selection_enter_date_day"
+        android:inputType="date"
+        android:nextFocusDown="@+id/search_date_month"
+        android:nextFocusForward="@+id/search_date_month"
+        android:nextFocusRight="@+id/search_date_month"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_label" />
+
+    <EditText
+        android:id="@+id/search_date_month"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:hint="@string/census_selection_enter_date_month"
+        android:inputType="date"
+        android:nextFocusDown="@+id/search_date_year"
+        android:nextFocusForward="@+id/search_date_year"
+        android:nextFocusLeft="@+id/search_date_day"
+        android:nextFocusRight="@+id/search_date_year"
+        android:nextFocusUp="@+id/search_date_day"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@+id/search_date_day"
+        app:layout_constraintEnd_toStartOf="@+id/search_date_year"
+        app:layout_constraintStart_toEndOf="@+id/search_date_day"
+        app:layout_constraintTop_toTopOf="@+id/search_date_day" />
+
+    <EditText
+        android:id="@+id/search_date_year"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
+        android:hint="@string/census_selection_enter_date_year"
+        android:inputType="date"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@+id/search_date_month"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/search_date_month" />
 
     <ListView
         android:id="@+id/census_selection"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_date"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/search_date_month" />
+
 
 </android.support.constraint.ConstraintLayout>
