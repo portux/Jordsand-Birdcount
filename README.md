@@ -27,7 +27,7 @@ management indicator species.
 
 Furthermore the app does not follow the usual "track by GPS" approach. Instead it is designed for
 point transects. That is observation takes place at certain fixed points. All species seen will then
-be recorded in terms of these areas. This makes the App somewhat unsuitable to monitoring of plants.
+be recorded in terms of these areas. This makes the App somewhat unsuitable for monitoring of plants.
 
 ## Adapting to your nature reserve ##
 
@@ -43,9 +43,11 @@ These are the things that will be implemented next:
 1. Enable import of new specifications (through their XML file) and offline-maps
 2. Offer direct upload of observations to an online service
 
+Your feature is not listed? [Just request it!](https://github.com/portux/Jordsand-Birdcount/issues/new?template=feature-request.md)
+
 ## Contact and reporting bugs ##
 
 Fell free to contact me via [email](mailto:portux@posteo.de) or just
-[open an issue](https://github.com/portux/Jordsand-Birdcount/issues/new) yourself.
+[open an issue](https://github.com/portux/Jordsand-Birdcount/issues/new?template=bug-report.md) yourself.
 I'll try to fix it as soon as possible, however depending on my resources this may still take some
 time.
